@@ -9,25 +9,28 @@
       margin: 0;
       padding: 0;
       font-family: 'Inter', sans-serif;
-      background-color: #f4f6fa;
-      color: #1a1a1a;
+      height: 100vh;
+      background: url('https://images.unsplash.com/photo-1477201800311-54e6d4a9f305?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
     }
 
     h1 {
       font-size: 3rem;
+      color: #ffffff; /* Try #00d4ff for a teal-blue glow */
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
       margin-bottom: 2rem;
     }
 
     .panel {
-      background-color: #ffffff;
+      background-color: rgba(30, 30, 30, 0.85);
       padding: 2rem 3rem;
       border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
       display: flex;
       flex-direction: column;
       gap: 1rem;
@@ -36,18 +39,17 @@
 
     .panel a {
       text-decoration: none;
-      color: #3366cc;
+      color: #66ccff;
       font-size: 1.2rem;
       font-weight: 600;
     }
 
     .panel a:hover {
-      color: #224488;
+      color: #ffffff;
     }
   </style>
 </head>
 <body>
-
   <h1>Steven Haworth</h1>
 
   <div class="panel">
