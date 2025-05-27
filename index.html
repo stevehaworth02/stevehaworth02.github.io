@@ -14,25 +14,36 @@
       color:#fff;scroll-behavior:smooth;background:#000;
     }
 
-    /* ⭐ video fills viewport, no letter‑boxing */
+    /* ⭐ video spans full viewport, no banding */
     .video-bg{
       position:fixed;top:0;left:0;
-      min-width:100%;min-height:100%;
-      object-fit:cover;z-index:-1;
+      width:100vw;height:100vh;
+      object-fit:cover;z-index:-2;   /* put beneath everything */
       transition:filter .3s;
     }
 
-    /* ---------- sections (unchanged) ---------- */
+    /* 🔵 gradient overlay (light‑blue → transparent → stars) */
+    .sky-overlay{
+      position:fixed;top:0;left:0;width:100%;height:100%;
+      pointer-events:none;z-index:-1;           /* sits above video */
+      background:linear-gradient(180deg,
+                 #86c6ff 0%,         /* pale light‑blue */
+                 rgba(0,123,255,.7) 20%,
+                 rgba(0,0,64,.3) 45%,
+                 rgba(0,0,0,0) 65%);
+    }
+
+    /* ---------- page sections ---------- */
     .intro{
       display:flex;flex-direction:column;justify-content:center;align-items:center;
-      height:100vh;backdrop-filter:brightness(.9);text-align:center;
+      height:100vh;text-align:center;          /* no brightness filter */
     }
     .intro h1{font-size:2.5rem;max-width:90%;white-space:pre-wrap}
     #typewriter::after{content:'|';animation:blink 1s infinite}
     @keyframes blink{0%,50%,100%{opacity:1}25%,75%{opacity:0}}
 
     .scroll-wrapper{margin-top:3rem;display:flex;flex-direction:column;align-items:center;gap:.5rem}
-    .scroll-text{font-size:1rem;color:rgba(255,255,255,.6)}
+    .scroll-text{font-size:1rem;color:rgba(255,255,255,.7)}
     .scroll-down{font-size:4rem;animation:bounce 2s infinite;cursor:pointer}
     @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
 
@@ -51,13 +62,12 @@
 
     /* ---------- epilepsy overlay ---------- */
     #epilepsy-warning{
-      position:fixed;top:0;left:0;width:100%;height:100%;
-      background:rgba(0,0,0,.95);z-index:9999;
+      position:fixed;inset:0;background:rgba(0,0,0,.95);
       display:flex;flex-direction:column;justify-content:center;align-items:center;
-      text-align:center;padding:2rem;
+      text-align:center;padding:2rem;z-index:9999;
     }
     #epilepsy-warning h2{font-size:2rem;margin-bottom:1.5rem}
-    #epilepsy-warning p{font-size:1.1rem;max-width:600px;margin-bottom:2rem}
+    #epilepsy-warning p{font-size:1.1rem;max-width:640px;margin-bottom:2rem}
     #epilepsy-warning button{
       margin:.5rem;padding:1rem 2rem;font-size:1rem;border:none;border-radius:8px;cursor:pointer
     }
@@ -67,13 +77,15 @@
 </head>
 <body>
 
-  <!-- background video -->
+  <!-- ⭐ background video -->
   <video class="video-bg" autoplay muted loop playsinline id="videoBackground">
     <source src="background.mp4" type="video/mp4">
-    Your browser does not support the video tag.
   </video>
 
-  <!-- epilepsy warning -->
+  <!-- 🔵 gradient overlay -->
+  <div class="sky-overlay" id="skyOverlay"></div>
+
+  <!-- ⚠️ epilepsy warning -->
   <div id="epilepsy-warning">
     <h2>⚠️ WARNING: Bright Flashes Alert</h2>
     <p>This website contains bright flashes of light that may not be appropriate for photosensitive users.<br>
@@ -84,7 +96,7 @@
     </div>
   </div>
 
-  <!-- typing intro -->
+  <!-- ✍️ intro -->
   <section class="intro" id="intro">
     <h1 id="typewriter"></h1>
     <div class="scroll-wrapper">
@@ -93,7 +105,7 @@
     </div>
   </section>
 
-  <!-- links panel -->
+  <!-- 🔗 links -->
   <section class="content" id="main">
     <div class="panel">
       <a href="symposium.html">Symposium</a>
@@ -107,21 +119,21 @@
     const text="Hi! I am Steven Haworth, but you can call me Steve.";
     const target=document.getElementById("typewriter");
     let i=0;
-    function type(){ if(i<text.length){ target.textContent+=text[i++]; setTimeout(type,100);} }
-    window.onload=type;
+    (function type(){ if(i<text.length){ target.textContent+=text[i++]; setTimeout(type,100);} })();
 
     /* scroll arrow */
     document.querySelector('.scroll-down')
             .addEventListener('click',()=>document.getElementById('main')
             .scrollIntoView({behavior:'smooth'}));
 
-    /* lock scroll while overlay active */
+    /* lock scroll during warning */
     document.body.style.overflow='hidden';
 
+    /* safe‑mode */
     function enableSafeMode(){
       const video=document.getElementById('videoBackground');
-      video.pause();                       // freeze frame
-      video.style.filter='brightness(.6)'; // optional calm dim
+      video.pause();                       // freeze twinkle
+      video.style.filter='brightness(.6)'; // calm dim
       closeWarning();
     }
     function disableSafeMode(){ closeWarning(); }
