@@ -14,36 +14,35 @@
       color:#fff;scroll-behavior:smooth;background:#000;
     }
 
-    /* ⭐ video spans full viewport, no banding */
+    /* ⭐ video covers entire screen */
     .video-bg{
       position:fixed;top:0;left:0;
-      width:100vw;height:100vh;
-      object-fit:cover;z-index:-2;   /* put beneath everything */
-      transition:filter .3s;
+      width:100vw;height:100vh;object-fit:cover;
+      z-index:-2;transition:filter .3s;
     }
 
-    /* 🔵 gradient overlay (light‑blue → transparent → stars) */
-    .sky-overlay{
+    /* 🔵 sky‑blue gradient overlay fading into transparent stars */
+    .gradient-top{
       position:fixed;top:0;left:0;width:100%;height:100%;
-      pointer-events:none;z-index:-1;           /* sits above video */
       background:linear-gradient(180deg,
-                 #86c6ff 0%,         /* pale light‑blue */
-                 rgba(0,123,255,.7) 20%,
-                 rgba(0,0,64,.3) 45%,
-                 rgba(0,0,0,0) 65%);
+               rgba(135,206,250,1) 0%,      /* sky‑blue */
+               rgba(135,206,250,.75) 20%,
+               rgba(0,0,64,.15) 50%,
+               rgba(0,0,0,0) 65%);
+      pointer-events:none;z-index:-1;
     }
 
-    /* ---------- page sections ---------- */
+    /* ---------- Content sections ---------- */
     .intro{
       display:flex;flex-direction:column;justify-content:center;align-items:center;
-      height:100vh;text-align:center;          /* no brightness filter */
+      height:100vh;text-align:center;
     }
     .intro h1{font-size:2.5rem;max-width:90%;white-space:pre-wrap}
     #typewriter::after{content:'|';animation:blink 1s infinite}
     @keyframes blink{0%,50%,100%{opacity:1}25%,75%{opacity:0}}
 
     .scroll-wrapper{margin-top:3rem;display:flex;flex-direction:column;align-items:center;gap:.5rem}
-    .scroll-text{font-size:1rem;color:rgba(255,255,255,.7)}
+    .scroll-text{font-size:1rem;color:rgba(255,255,255,.75)}
     .scroll-down{font-size:4rem;animation:bounce 2s infinite;cursor:pointer}
     @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
 
@@ -77,26 +76,26 @@
 </head>
 <body>
 
-  <!-- ⭐ background video -->
+  <!-- ⭐ Starry video -->
   <video class="video-bg" autoplay muted loop playsinline id="videoBackground">
     <source src="background.mp4" type="video/mp4">
   </video>
 
-  <!-- 🔵 gradient overlay -->
-  <div class="sky-overlay" id="skyOverlay"></div>
+  <!-- 🔵 Gradient top overlay -->
+  <div class="gradient-top"></div>
 
-  <!-- ⚠️ epilepsy warning -->
+  <!-- ⚠️ Epilepsy warning -->
   <div id="epilepsy-warning">
     <h2>⚠️ WARNING: Bright Flashes Alert</h2>
-    <p>This website contains bright flashes of light that may not be appropriate for photosensitive users.<br>
-       Would you like to enable an epilepsy‑friendly version?</p>
+    <p>This site contains bright flashes that may not be appropriate for photosensitive users.<br>
+       Enable epilepsy‑friendly mode?</p>
     <div>
-      <button class="safe-mode" onclick="enableSafeMode()">Yes, enable safe mode</button>
+      <button class="safe-mode" onclick="enableSafeMode()">Yes, enable</button>
       <button class="normal-mode" onclick="disableSafeMode()">No, continue</button>
     </div>
   </div>
 
-  <!-- ✍️ intro -->
+  <!-- ✍️ Intro -->
   <section class="intro" id="intro">
     <h1 id="typewriter"></h1>
     <div class="scroll-wrapper">
@@ -105,7 +104,7 @@
     </div>
   </section>
 
-  <!-- 🔗 links -->
+  <!-- 🔗 Links -->
   <section class="content" id="main">
     <div class="panel">
       <a href="symposium.html">Symposium</a>
@@ -115,25 +114,25 @@
   </section>
 
   <script>
-    /* typing */
+    /* Typing effect */
     const text="Hi! I am Steven Haworth, but you can call me Steve.";
     const target=document.getElementById("typewriter");
     let i=0;
     (function type(){ if(i<text.length){ target.textContent+=text[i++]; setTimeout(type,100);} })();
 
-    /* scroll arrow */
+    /* Scroll arrow */
     document.querySelector('.scroll-down')
             .addEventListener('click',()=>document.getElementById('main')
             .scrollIntoView({behavior:'smooth'}));
 
-    /* lock scroll during warning */
+    /* Lock scroll until decision */
     document.body.style.overflow='hidden';
 
-    /* safe‑mode */
+    /* Safe‑mode logic */
     function enableSafeMode(){
       const video=document.getElementById('videoBackground');
-      video.pause();                       // freeze twinkle
-      video.style.filter='brightness(.6)'; // calm dim
+      video.pause();
+      video.style.filter='brightness(.6)';
       closeWarning();
     }
     function disableSafeMode(){ closeWarning(); }
