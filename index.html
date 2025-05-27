@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Steven Haworth's Website</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
@@ -16,6 +17,7 @@
       font-family: 'Inter', sans-serif;
       color: white;
       scroll-behavior: smooth;
+      background-color: #000; /* fallback background */
     }
 
     .video-bg {
@@ -117,12 +119,11 @@
 </head>
 <body>
 
+  <!-- Background video (muted for Safari compatibility) -->
   <video class="video-bg" autoplay muted loop playsinline preload="auto" disablePictureInPicture>
     <source src="background.mp4" type="video/mp4">
-    <!-- Hide fallback -->
     <span style="display: none;">Your browser does not support the video tag.</span>
   </video>
-
 
   <!-- Intro section -->
   <section class="intro" id="intro">
@@ -151,7 +152,7 @@
       if (i < text.length) {
         target.textContent += text.charAt(i);
         i++;
-        setTimeout(type, 100); // slower typing
+        setTimeout(type, 100); // typing speed
       }
     }
 
