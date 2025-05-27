@@ -6,96 +6,113 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-
-    html,body{
-      height:100%;
-      font-family:'Inter',sans-serif;
-      color:#fff;scroll-behavior:smooth;background:#000;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    /* ⭐ video covers entire screen */
-    .video-bg{
-      position:fixed;top:0;left:0;
-      width:100vw;height:100vh;object-fit:cover;
-      z-index:-2;transition:filter .3s;
+    html, body {
+      height: 100%;
+      font-family: 'Inter', sans-serif;
+      color: white;
+      scroll-behavior: smooth;
     }
 
-    /* 🔵 sky‑blue gradient overlay fading into transparent stars */
-    .gradient-top{
-      position:fixed;top:0;left:0;width:100%;height:100%;
-      background:linear-gradient(180deg,
-               rgba(135,206,250,1) 0%,      /* sky‑blue */
-               rgba(135,206,250,.75) 20%,
-               rgba(0,0,64,.15) 50%,
-               rgba(0,0,0,0) 65%);
-      pointer-events:none;z-index:-1;
+    /* star video fills entire viewport */
+    .video-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      z-index: -1;
     }
 
-    /* ---------- Content sections ---------- */
-    .intro{
-      display:flex;flex-direction:column;justify-content:center;align-items:center;
-      height:100vh;text-align:center;
+    /* typing intro */
+    .intro {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      backdrop-filter: brightness(0.9);
+      text-align: center;
     }
-    .intro h1{font-size:2.5rem;max-width:90%;white-space:pre-wrap}
-    #typewriter::after{content:'|';animation:blink 1s infinite}
-    @keyframes blink{0%,50%,100%{opacity:1}25%,75%{opacity:0}}
+    .intro h1 {
+      font-size: 2.5rem;
+      max-width: 90%;
+      white-space: pre-wrap;
+    }
+    #typewriter::after {
+      content: '|';
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 50%, 100% { opacity: 1; }
+      25%, 75% { opacity: 0; }
+    }
 
-    .scroll-wrapper{margin-top:3rem;display:flex;flex-direction:column;align-items:center;gap:.5rem}
-    .scroll-text{font-size:1rem;color:rgba(255,255,255,.75)}
-    .scroll-down{font-size:4rem;animation:bounce 2s infinite;cursor:pointer}
-    @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
-
-    .content{
-      display:flex;flex-direction:column;justify-content:center;align-items:center;
-      height:100vh;backdrop-filter:brightness(.9);
+    .scroll-wrapper {
+      margin-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .scroll-text {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 400;
+    }
+    .scroll-down {
+      font-size: 4rem;
+      animation: bounce 2s infinite;
+      cursor: pointer;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(10px); }
     }
 
-    .panel{
-      background:rgba(30,30,30,.85);padding:2rem 3rem;border-radius:12px;
-      box-shadow:0 8px 20px rgba(0,0,0,.7);
-      display:flex;flex-direction:column;gap:1rem;align-items:center;
+    /* links panel */
+    .content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      backdrop-filter: brightness(0.9);
     }
-    .panel a{text-decoration:none;color:#66ccff;font-size:1.2rem;font-weight:600}
-    .panel a:hover{color:#fff}
-
-    /* ---------- epilepsy overlay ---------- */
-    #epilepsy-warning{
-      position:fixed;inset:0;background:rgba(0,0,0,.95);
-      display:flex;flex-direction:column;justify-content:center;align-items:center;
-      text-align:center;padding:2rem;z-index:9999;
+    .panel {
+      background-color: rgba(30, 30, 30, 0.85);
+      padding: 2rem 3rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
     }
-    #epilepsy-warning h2{font-size:2rem;margin-bottom:1.5rem}
-    #epilepsy-warning p{font-size:1.1rem;max-width:640px;margin-bottom:2rem}
-    #epilepsy-warning button{
-      margin:.5rem;padding:1rem 2rem;font-size:1rem;border:none;border-radius:8px;cursor:pointer
+    .panel a {
+      text-decoration: none;
+      color: #66ccff;
+      font-size: 1.2rem;
+      font-weight: 600;
     }
-    .safe-mode{background:#66ccff;color:#000}
-    .normal-mode{background:#444;color:#fff}
+    .panel a:hover { color: #ffffff; }
   </style>
 </head>
 <body>
 
-  <!-- ⭐ Starry video -->
-  <video class="video-bg" autoplay muted loop playsinline id="videoBackground">
+  <!-- background stars video -->
+  <video class="video-bg" autoplay muted loop playsinline>
     <source src="background.mp4" type="video/mp4">
+    Your browser does not support the video tag.
   </video>
 
-  <!-- 🔵 Gradient top overlay -->
-  <div class="gradient-top"></div>
-
-  <!-- ⚠️ Epilepsy warning -->
-  <div id="epilepsy-warning">
-    <h2>⚠️ WARNING: Bright Flashes Alert</h2>
-    <p>This site contains bright flashes that may not be appropriate for photosensitive users.<br>
-       Enable epilepsy‑friendly mode?</p>
-    <div>
-      <button class="safe-mode" onclick="enableSafeMode()">Yes, enable</button>
-      <button class="normal-mode" onclick="disableSafeMode()">No, continue</button>
-    </div>
-  </div>
-
-  <!-- ✍️ Intro -->
+  <!-- intro -->
   <section class="intro" id="intro">
     <h1 id="typewriter"></h1>
     <div class="scroll-wrapper">
@@ -104,7 +121,7 @@
     </div>
   </section>
 
-  <!-- 🔗 Links -->
+  <!-- links -->
   <section class="content" id="main">
     <div class="panel">
       <a href="symposium.html">Symposium</a>
@@ -114,32 +131,23 @@
   </section>
 
   <script>
-    /* Typing effect */
-    const text="Hi! I am Steven Haworth, but you can call me Steve.";
-    const target=document.getElementById("typewriter");
-    let i=0;
-    (function type(){ if(i<text.length){ target.textContent+=text[i++]; setTimeout(type,100);} })();
+    /* typing animation */
+    const text = "Hi! I am Steven Haworth, but you can call me Steve.";
+    const target = document.getElementById("typewriter");
+    let i = 0;
+    function type() {
+      if (i < text.length) {
+        target.textContent += text.charAt(i++);
+        setTimeout(type, 100);
+      }
+    }
+    window.onload = type;
 
-    /* Scroll arrow */
+    /* scroll arrow */
     document.querySelector('.scroll-down')
-            .addEventListener('click',()=>document.getElementById('main')
-            .scrollIntoView({behavior:'smooth'}));
-
-    /* Lock scroll until decision */
-    document.body.style.overflow='hidden';
-
-    /* Safe‑mode logic */
-    function enableSafeMode(){
-      const video=document.getElementById('videoBackground');
-      video.pause();
-      video.style.filter='brightness(.6)';
-      closeWarning();
-    }
-    function disableSafeMode(){ closeWarning(); }
-    function closeWarning(){
-      document.getElementById('epilepsy-warning').style.display='none';
-      document.body.style.overflow='auto';
-    }
+      .addEventListener('click', () =>
+        document.getElementById('main')
+        .scrollIntoView({ behavior: 'smooth' }));
   </script>
 
 </body>
