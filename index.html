@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Steven Haworth's Website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * {
@@ -11,11 +12,12 @@
       box-sizing: border-box;
     }
 
-    body, html {
+    html, body {
       height: 100%;
       font-family: 'Inter', sans-serif;
       color: white;
       scroll-behavior: smooth;
+      background-color: black;
     }
 
     .video-bg {
@@ -26,6 +28,7 @@
       min-height: 100%;
       object-fit: cover;
       z-index: -1;
+      transition: filter 0.3s ease;
     }
 
     .intro {
@@ -113,16 +116,74 @@
     .panel a:hover {
       color: #ffffff;
     }
+
+    /* Epilepsy warning popup */
+    #epilepsy-warning {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    #epilepsy-warning h2 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    #epilepsy-warning p {
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin-bottom: 2rem;
+    }
+
+    #epilepsy-warning button {
+      margin: 0.5rem;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .safe-mode {
+      background-color: #66ccff;
+      color: #000;
+    }
+
+    .normal-mode {
+      background-color: #444;
+      color: #fff;
+    }
   </style>
 </head>
 <body>
 
-  <video class="video-bg" autoplay muted loop playsinline>
+  <!-- 🎥 Background video -->
+  <video class="video-bg" autoplay muted loop playsinline id="videoBackground">
     <source src="background.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
 
-  <!-- Intro section -->
+  <!-- ⚠️ Epilepsy warning popup -->
+  <div id="epilepsy-warning">
+    <h2>⚠️ WARNING: Bright Flashes Alert</h2>
+    <p>This website contains bright flashes of light that may not be appropriate for photosensitive users. Would you like to enable an epilepsy-friendly version of the site?</p>
+    <div>
+      <button class="safe-mode" onclick="enableSafeMode()">Yes, enable safe mode</button>
+      <button class="normal-mode" onclick="disableSafeMode()">No, continue with effects</button>
+    </div>
+  </div>
+
+  <!-- ✍️ Intro -->
   <section class="intro" id="intro">
     <h1 id="typewriter"></h1>
     <div class="scroll-wrapper">
@@ -131,7 +192,7 @@
     </div>
   </section>
 
-  <!-- Content panel section -->
+  <!-- 🔗 Links panel -->
   <section class="content" id="main">
     <div class="panel">
       <a href="symposium.html">Symposium</a>
@@ -141,6 +202,7 @@
   </section>
 
   <script>
+    // Typing effect
     const text = "Hi! I am Steven Haworth, but you can call me Steve.";
     const target = document.getElementById("typewriter");
     let i = 0;
@@ -149,15 +211,28 @@
       if (i < text.length) {
         target.textContent += text.charAt(i);
         i++;
-        setTimeout(type, 100); // slower typing
+        setTimeout(type, 100);
       }
     }
 
     window.onload = type;
 
+    // Scroll arrow
     document.querySelector('.scroll-down').addEventListener('click', () => {
       document.getElementById('main').scrollIntoView({ behavior: 'smooth' });
     });
+
+    // Safe mode functions
+    function enableSafeMode() {
+      const video = document.getElementById('videoBackground');
+      video.pause(); // freeze the video
+      video.style.filter = 'brightness(0.6)'; // optional dimming
+      document.getElementById('epilepsy-warning').style.display = 'none';
+    }
+
+    function disableSafeMode() {
+      document.getElementById('epilepsy-warning').style.display = 'none';
+    }
   </script>
 
 </body>
