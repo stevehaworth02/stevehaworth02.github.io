@@ -119,7 +119,7 @@
 </head>
 <body>
 
-  <!-- Background video (muted for Safari compatibility) -->
+  <!-- Background video -->
   <video class="video-bg" autoplay muted loop playsinline preload="auto" disablePictureInPicture>
     <source src="background.mp4" type="video/mp4">
     <span style="display: none;">Your browser does not support the video tag.</span>
@@ -144,6 +144,7 @@
   </section>
 
   <script>
+    // Typing effect
     const text = "Hi! I am Steven Haworth, but you can call me Steve.";
     const target = document.getElementById("typewriter");
     let i = 0;
@@ -152,7 +153,7 @@
       if (i < text.length) {
         target.textContent += text.charAt(i);
         i++;
-        setTimeout(type, 100); // typing speed
+        setTimeout(type, 100);
       }
     }
 
@@ -161,6 +162,33 @@
     document.querySelector('.scroll-down').addEventListener('click', () => {
       document.getElementById('main').scrollIntoView({ behavior: 'smooth' });
     });
+
+    // Browser check for Chrome
+    const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+
+    if (!isChrome) {
+      const notice = document.createElement("div");
+      notice.textContent = "⚠️ For best performance, please use Google Chrome.";
+      Object.assign(notice.style, {
+        position: "fixed",
+        bottom: "20px",
+        left: "50%",
+        transform: "translateX(-50%)",
+        background: "rgba(0, 0, 0, 0.8)",
+        color: "#fff",
+        padding: "12px 20px",
+        borderRadius: "8px",
+        fontSize: "1rem",
+        zIndex: "1000",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+        transition: "opacity 1s ease",
+      });
+      document.body.appendChild(notice);
+
+      setTimeout(() => {
+        notice.style.opacity = 0;
+      }, 6000);
+    }
   </script>
 
 </body>
