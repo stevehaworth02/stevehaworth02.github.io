@@ -6,121 +6,59 @@
   <title>Steven Haworth's Website</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    *{margin:0;padding:0;box-sizing:border-box}
+
+    body,html{
+      height:100%;font-family:'Inter',sans-serif;
+      color:#fff;scroll-behavior:smooth;background:#000
     }
 
-    body, html {
-      height: 100%;
-      font-family: 'Inter', sans-serif;
-      color: white;
-      scroll-behavior: smooth;
-      background-color: #000;
+    /* full‑screen background video */
+    .video-bg{
+      position:fixed;top:0;left:0;width:100vw;height:100vh;
+      object-fit:cover;z-index:-2
     }
 
-    .video-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      z-index: -1;
+    /* ===== first (typing) screen ===== */
+    .intro{
+      display:flex;flex-direction:column;justify-content:center;
+      align-items:center;height:100vh;text-align:center
+      /* no brightness filter so stars stay visible */
+    }
+    .intro h1{font-size:2.5rem;max-width:90%;white-space:pre-wrap}
+    #typewriter::after{content:'|';animation:blink 1s infinite}
+    @keyframes blink{0%,50%,100%{opacity:1}25%,75%{opacity:0}}
+
+    /* scroll arrow + label */
+    .scroll-wrapper{margin-top:3rem;display:flex;flex-direction:column;align-items:center;gap:.5rem}
+    .scroll-text{font-size:1rem;color:rgba(255,255,255,.6)}
+    .scroll-down{font-size:4rem;animation:bounce 2s infinite;cursor:pointer}
+    @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+
+    /* ===== lower panel section ===== */
+    .content{
+      display:flex;flex-direction:column;justify-content:center;align-items:center;
+      height:100vh;backdrop-filter:brightness(.9)   /* dim only the panel section */
     }
 
-    .intro {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-      backdrop-filter: brightness(0.9);
+    .panel{
+      background:rgba(30,30,30,.85);padding:2rem 3rem;border-radius:12px;
+      box-shadow:0 8px 20px rgba(0,0,0,.7);display:flex;flex-direction:column;
+      gap:1rem;align-items:center
     }
-
-    .intro h1 {
-      font-size: 2.5rem;
-      max-width: 90%;
-      white-space: pre-wrap;
-    }
-
-    #typewriter::after {
-      content: '|';
-      animation: blink 1s infinite;
-    }
-
-    @keyframes blink {
-      0%, 50%, 100% { opacity: 1; }
-      25%, 75% { opacity: 0; }
-    }
-
-    .scroll-wrapper {
-      margin-top: 3rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .scroll-text {
-      font-size: 1rem;
-      color: rgba(255, 255, 255, 0.6);
-    }
-
-    .scroll-down {
-      font-size: 4rem;
-      animation: bounce 2s infinite;
-      cursor: pointer;
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(10px); }
-    }
-
-    .content {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      backdrop-filter: brightness(0.9);
-    }
-
-    .panel {
-      background-color: rgba(30, 30, 30, 0.85);
-      padding: 2rem 3rem;
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      align-items: center;
-    }
-
-    .panel a {
-      text-decoration: none;
-      color: #66ccff;
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
-
-    .panel a:hover {
-      color: #ffffff;
-    }
+    .panel a{text-decoration:none;color:#66ccff;font-size:1.2rem;font-weight:600}
+    .panel a:hover{color:#fff}
   </style>
 </head>
 <body>
 
-  <!-- 🎥 Background video -->
+  <!-- background video -->
   <video class="video-bg" autoplay muted loop playsinline>
     <source src="background.mp4" type="video/mp4">
-    <span style="display: none;">Your browser does not support the video tag.</span>
+    <span style="display:none">Your browser does not support the video tag.</span>
   </video>
 
-  <!-- ✍️ Intro typing section -->
+  <!-- typing intro -->
   <section class="intro" id="intro">
     <h1 id="typewriter"></h1>
     <div class="scroll-wrapper">
@@ -129,7 +67,7 @@
     </div>
   </section>
 
-  <!-- 🔗 Main content panel -->
+  <!-- main links panel -->
   <section class="content" id="main">
     <div class="panel">
       <a href="symposium.html">Symposium</a>
@@ -139,23 +77,24 @@
   </section>
 
   <script>
-    const text = "Hi! I am Steven Haworth, but you can call me Steve.";
-    const target = document.getElementById("typewriter");
-    let i = 0;
-
-    function type() {
-      if (i < text.length) {
-        target.textContent += text.charAt(i);
-        i++;
-        setTimeout(type, 100); // Typing speed
+    /* typing effect */
+    const text="Hi! I am Steven Haworth, but you can call me Steve.";
+    const target=document.getElementById("typewriter");
+    let i=0;
+    function type(){
+      if(i<text.length){
+        target.textContent+=text.charAt(i++);
+        setTimeout(type,100);
       }
     }
+    window.onload=type;
 
-    window.onload = type;
-
-    document.querySelector('.scroll-down').addEventListener('click', () => {
-      document.getElementById('main').scrollIntoView({ behavior: 'smooth' });
-    });
+    /* smooth scroll when arrow clicked */
+    document.querySelector('.scroll-down')
+            .addEventListener('click',()=>document
+              .getElementById('main')
+              .scrollIntoView({behavior:'smooth'}));
   </script>
 
-</bod
+</body>
+</html>
