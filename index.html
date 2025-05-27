@@ -17,7 +17,7 @@
       font-family: 'Inter', sans-serif;
       color: white;
       scroll-behavior: smooth;
-      background-color: #000; /* fallback background */
+      background-color: #000; /* fallback background just in case */
     }
 
     .video-bg {
@@ -120,7 +120,7 @@
 <body>
 
   <!-- Background video -->
-  <video class="video-bg" autoplay muted loop playsinline preload="auto" disablePictureInPicture>
+  <video class="video-bg" autoplay muted loop playsinline preload="auto">
     <source src="background.mp4" type="video/mp4">
     <span style="display: none;">Your browser does not support the video tag.</span>
   </video>
@@ -153,7 +153,7 @@
       if (i < text.length) {
         target.textContent += text.charAt(i);
         i++;
-        setTimeout(type, 100);
+        setTimeout(type, 100); // slow, clean type
       }
     }
 
@@ -162,33 +162,6 @@
     document.querySelector('.scroll-down').addEventListener('click', () => {
       document.getElementById('main').scrollIntoView({ behavior: 'smooth' });
     });
-
-    // Browser check for Chrome
-    const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-
-    if (!isChrome) {
-      const notice = document.createElement("div");
-      notice.textContent = "⚠️ For best performance, please use Google Chrome.";
-      Object.assign(notice.style, {
-        position: "fixed",
-        bottom: "20px",
-        left: "50%",
-        transform: "translateX(-50%)",
-        background: "rgba(0, 0, 0, 0.8)",
-        color: "#fff",
-        padding: "12px 20px",
-        borderRadius: "8px",
-        fontSize: "1rem",
-        zIndex: "1000",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-        transition: "opacity 1s ease",
-      });
-      document.body.appendChild(notice);
-
-      setTimeout(() => {
-        notice.style.opacity = 0;
-      }, 6000);
-    }
   </script>
 
 </body>
