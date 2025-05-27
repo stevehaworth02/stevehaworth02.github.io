@@ -41,16 +41,9 @@
     .intro h1 {
       font-size: 2.5rem;
       max-width: 90%;
-      opacity: 0;
-      animation: fadeIn 3s forwards;
-      animation-delay: 1s;
-      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
-    }
-
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-      }
+      white-space: pre-wrap;
+      border-right: 2px solid white;
+      overflow: hidden;
     }
 
     .scroll-down {
@@ -110,10 +103,8 @@
 
   <!-- Intro section -->
   <section class="intro" id="intro">
-    <h1>Hi! I am Steven Haworth,<br>but you can call me Steve.</h1>
-    <div class="scroll-down">
-      ↓
-    </div>
+    <h1 id="typewriter"></h1>
+    <div class="scroll-down">↓</div>
   </section>
 
   <!-- Content panel section -->
@@ -126,7 +117,23 @@
   </section>
 
   <script>
-    // Optionally scroll to content if arrow is clicked
+    const text = "Hi! I am Steven Haworth, but you can call me Steve.";
+    const target = document.getElementById("typewriter");
+    let i = 0;
+
+    function type() {
+      if (i < text.length) {
+        target.textContent += text.charAt(i);
+        i++;
+        setTimeout(type, 50); // Adjust speed here
+      } else {
+        target.style.borderRight = "none"; // remove cursor
+      }
+    }
+
+    window.onload = type;
+
+    // Scroll behavior
     document.querySelector('.scroll-down').addEventListener('click', () => {
       document.getElementById('main').scrollIntoView({ behavior: 'smooth' });
     });
