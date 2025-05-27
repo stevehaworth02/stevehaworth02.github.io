@@ -15,6 +15,7 @@
       height: 100%;
       font-family: 'Inter', sans-serif;
       color: white;
+      scroll-behavior: smooth;
     }
 
     .video-bg {
@@ -27,19 +28,54 @@
       z-index: -1;
     }
 
+    .intro {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      backdrop-filter: brightness(0.9);
+      text-align: center;
+    }
+
+    .intro h1 {
+      font-size: 2.5rem;
+      max-width: 90%;
+      opacity: 0;
+      animation: fadeIn 3s forwards;
+      animation-delay: 1s;
+      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    .scroll-down {
+      position: absolute;
+      bottom: 30px;
+      font-size: 2rem;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(10px);
+      }
+    }
+
     .content {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100%;
+      height: 100vh;
       backdrop-filter: brightness(0.9);
-    }
-
-    h1 {
-      font-size: 3rem;
-      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
-      margin-bottom: 2rem;
     }
 
     .panel {
@@ -67,21 +103,34 @@
 </head>
 <body>
 
-  <!-- 🎥 Video background -->
   <video class="video-bg" autoplay muted loop playsinline>
     <source src="background.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
 
-  <div class="content">
-    <h1>I Am Steven Haworth</h1>
+  <!-- Intro section -->
+  <section class="intro" id="intro">
+    <h1>Hi! I am Steven Haworth,<br>but you can call me Steve.</h1>
+    <div class="scroll-down">
+      ↓
+    </div>
+  </section>
 
+  <!-- Content panel section -->
+  <section class="content" id="main">
     <div class="panel">
       <a href="symposium.html">Symposium</a>
       <a href="https://github.com/stevehaworth02" target="_blank">GitHub</a>
       <a href="https://www.linkedin.com/in/stevenhaworth02/" target="_blank">LinkedIn</a>
     </div>
-  </div>
+  </section>
+
+  <script>
+    // Optionally scroll to content if arrow is clicked
+    document.querySelector('.scroll-down').addEventListener('click', () => {
+      document.getElementById('main').scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
 
 </body>
 </html>
