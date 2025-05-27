@@ -117,10 +117,12 @@
 </head>
 <body>
 
-  <video class="video-bg" autoplay muted loop playsinline>
+  <video class="video-bg" autoplay muted loop playsinline preload="auto" disablePictureInPicture>
     <source src="background.mp4" type="video/mp4">
-    Your browser does not support the video tag.
+    <!-- Hide fallback -->
+    <span style="display: none;">Your browser does not support the video tag.</span>
   </video>
+
 
   <!-- Intro section -->
   <section class="intro" id="intro">
