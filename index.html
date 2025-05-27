@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Steven Haworth's Website</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
@@ -10,20 +9,19 @@
 
     body,html{
       height:100%;font-family:'Inter',sans-serif;
-      color:#fff;scroll-behavior:smooth;background:#000   /* just a safety fallback */
+      color:#fff;scroll-behavior:smooth;background:#000
     }
 
-    /* full‑screen video */
     .video-bg{
       position:fixed;top:0;left:0;width:100vw;height:100vh;
       object-fit:cover;z-index:-2;pointer-events:none
     }
 
-    /* ---------- 1st screen ---------- */
     .intro{
       display:flex;flex-direction:column;justify-content:center;align-items:center;
-      height:100vh;text-align:center;background:transparent  /* stay transparent */
+      height:100vh;text-align:center;background:transparent
     }
+
     .intro h1{font-size:2.5rem;max-width:90%;white-space:pre-wrap}
     #typewriter::after{content:'|';animation:blink 1s infinite}
     @keyframes blink{0%,50%,100%{opacity:1}25%,75%{opacity:0}}
@@ -33,10 +31,9 @@
     .scroll-down{font-size:4rem;animation:bounce 2s infinite;cursor:pointer}
     @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
 
-    /* ---------- links panel ---------- */
     .content{
       display:flex;flex-direction:column;justify-content:center;align-items:center;
-      height:100vh;background:transparent               /* stay transparent too */
+      height:100vh;background:transparent
     }
 
     .panel{
@@ -51,9 +48,9 @@
 <body>
 
   <!-- background video -->
-  <video class="video-bg" autoplay muted loop playsinline preload="auto">
+  <video class="video-bg" autoplay muted loop playsinline preload="auto" disablePictureInPicture>
     <source src="background.mp4" type="video/mp4">
-    <span style="display:none">Your browser does not support the video tag.</span>
+    <span style="display: none;">Your browser does not support the video tag.</span>
   </video>
 
   <!-- typing intro -->
@@ -75,23 +72,24 @@
   </section>
 
   <script>
-    /* typing animation */
-    const text="Hi! I am Steven Haworth, but you can call me Steve.";
-    const target=document.getElementById("typewriter");
-    let i=0;
-    function type(){
-      if(i<text.length){
-        target.textContent+=text.charAt(i++);
-        setTimeout(type,100);
+    const text = "Hi! I am Steven Haworth, but you can call me Steve.";
+    const target = document.getElementById("typewriter");
+    let i = 0;
+
+    function type() {
+      if (i < text.length) {
+        target.textContent += text.charAt(i);
+        i++;
+        setTimeout(type, 100);
       }
     }
-    window.onload=type;
 
-    /* smooth scroll */
+    window.onload = type;
+
     document.querySelector('.scroll-down')
-            .addEventListener('click',()=>document
+            .addEventListener('click', () => document
               .getElementById('main')
-              .scrollIntoView({behavior:'smooth'}));
+              .scrollIntoView({ behavior: 'smooth' }));
   </script>
 
 </body>
