@@ -17,17 +17,17 @@
       font-family: 'Inter', sans-serif;
       color: white;
       scroll-behavior: smooth;
-      background-color: #000; /* fallback background just in case */
+      background-color: #000; /* Fallback in case video fails */
     }
 
     .video-bg {
       position: fixed;
       top: 0;
       left: 0;
-      min-width: 100%;
-      min-height: 100%;
+      width: 100vw;
+      height: 100vh;
       object-fit: cover;
-      z-index: -1;
+      z-index: -2;
     }
 
     .intro {
@@ -153,12 +153,13 @@
       if (i < text.length) {
         target.textContent += text.charAt(i);
         i++;
-        setTimeout(type, 100); // slow, clean type
+        setTimeout(type, 100);
       }
     }
 
     window.onload = type;
 
+    // Scroll behavior
     document.querySelector('.scroll-down').addEventListener('click', () => {
       document.getElementById('main').scrollIntoView({ behavior: 'smooth' });
     });
