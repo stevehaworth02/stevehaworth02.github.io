@@ -6,105 +6,109 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    *{margin:0;padding:0;box-sizing:border-box;}
-
-    html,body{
-      width:100%;
-      height:100%;
-      font-family:'Inter',sans-serif;
-      color:#fff;
-      background:#000; /* ✨ fallback if video doesn’t load */
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      scroll-behavior:smooth;
-      position:relative; /* create stacking context so -1 z‑index shows up */
-      overflow:hidden;  /* keep video from creating scrollbars */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    /* ---------- full‑screen background video ---------- */
-    .video-bg{
-      position:fixed;
-      top:0;
-      left:0;
-      width:100vw;
-      height:100vh;
-      object-fit:cover;
-      z-index:-1;          /* behind everything else */
-      pointer-events:none; /* let clicks through */
-      background:url('star-fallback.jpg') center/cover no-repeat; /* static image fallback */
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+      background-color: black;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      scroll-behavior: smooth;
     }
 
-    /* ---------- glass panel ---------- */
-    .glass-panel{
-      background:rgba(15,15,30,0.75);
-      border:1px solid rgba(255,255,255,0.1);
-      border-radius:16px;
-      padding:2rem;
-      text-align:center;
-      backdrop-filter:blur(12px);
-      -webkit-backdrop-filter:blur(12px);
-      box-shadow:0 10px 30px rgba(0,0,0,0.7);
-      max-width:900px;
-      width:90%;
+    .video-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
     }
 
-    .timeline{
-      display:flex;
-      justify-content:center;
-      gap:1.5rem;
-      margin-bottom:1rem;
-      flex-wrap:wrap;
+    .glass-panel {
+      background: rgba(15, 15, 30, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+      max-width: 900px;
+      width: 90%;
     }
 
-    .timeline-item{display:flex;flex-direction:column;align-items:center;}
-
-    .timeline-item img{
-      width:150px;
-      height:150px;
-      object-fit:cover;
-      border-radius:50%;
-      border:2px solid #fff;
+    .timeline {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
     }
 
-    .timeline-item span{
-      margin-top:0.5rem;
-      font-size:0.95rem;
-      color:#aaa;
+    .timeline-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .about-text{
-      margin:1.5rem 0;
-      font-size:1.1rem;
-      line-height:1.6;
+    .timeline-item img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid white;
     }
 
-    .links{
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:center;
-      gap:1rem;
-      margin-top:1.5rem;
+    .timeline-item span {
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+      color: #aaa;
     }
 
-    .links a{
-      text-decoration:none;
-      color:#fff;
-      background:rgba(102,204,255,0.2);
-      padding:0.75rem 1.5rem;
-      border-radius:8px;
-      border:1px solid #66ccff;
-      transition:background 0.3s,color 0.3s;
+    .about-text {
+      margin: 1.5rem 0;
+      font-size: 1.1rem;
+      line-height: 1.6;
     }
 
-    .links a:hover{
-      background:#66ccff;
-      color:#000;
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .links a {
+      text-decoration: none;
+      color: white;
+      background-color: rgba(102, 204, 255, 0.2);
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      border: 1px solid #66ccff;
+      transition: background-color 0.3s;
+    }
+
+    .links a:hover {
+      background-color: #66ccff;
+      color: black;
     }
   </style>
 </head>
 <body>
-  <!-- ⭐ Starry sky video -->
+
+  <!-- ⭐ Starry background video -->
   <video class="video-bg" autoplay muted loop playsinline>
     <source src="background.mp4" type="video/mp4">
   </video>
@@ -127,8 +131,8 @@
     </div>
 
     <div class="about-text">
-      Hi! I'm Steven Haworth — a Data Science master's student at UW–Madison.<br>
-      I'm passionate about EEG signal processing, machine learning, and quant research.<br>
+      Hi! I'm Steven Haworth — a Data Science master's student at UW–Madison.<br />
+      I'm passionate about EEG signal processing, machine learning, and quant research.<br />
       Thanks for stopping by my corner of the galaxy.
     </div>
 
@@ -140,5 +144,6 @@
       <a href="symposium.html">Symposium</a>
     </div>
   </div>
+
 </body>
 </html>
