@@ -6,33 +6,185 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-    html,body{
-      width:100%;height:100%;
-      overflow:hidden;
-      font-family:'Inter',sans-serif;
-      color:#fff;
-      display:flex;                 /* center everything on both axes   */
-      flex-direction:column;        /* stack header then panel vertically */
-      justify-content:center;
-      align-items:center;
-      scroll-behavior:smooth;
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+      color: white;
+
+      /* 🔽 stack header above panel while keeping everything centered */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      scroll-behavior: smooth;
     }
 
     /* ---------- starry video background ---------- */
-    .video-bg{
-      position:fixed;top:0;left:0;
-      width:100%;height:100%;
-      object-fit:cover;
-      z-index:0;
+    .video-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
     }
 
     /* ---------- typing header ---------- */
-    .typewriter{
-      font-size:2rem;font-weight:700;
-      white-space:nowrap;overflow:hidden;
-      border-right:2px solid #fff;
-      z-index:2;                    /* above panel */
-      margin-bottom:1.5rem;         /* gap before the panel */
-      animation
+    .typewriter {
+      display: inline-block;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid #fff;
+      margin-bottom: 1.5rem;     /* spacing above the panel */
+      z-index: 2;
+
+      animation: typing 4s steps(40, end) forwards,
+                 blink 0.8s step-end infinite;
+    }
+
+    @keyframes typing {
+      from { width: 0; }
+      to   { width: 100%; }
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    /* ---------- glass panel ---------- */
+    .glass-panel {
+      position: relative;
+      background: rgba(15, 15, 30, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+      max-width: 900px;
+      width: 90%;
+      z-index: 1;
+      margin: 20px;
+    }
+
+    /* ---------- timeline ---------- */
+    .timeline {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .timeline-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .timeline-item img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid white;
+    }
+
+    .timeline-item span {
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+      color: #aaa;
+    }
+
+    /* ---------- about section ---------- */
+    .about-text {
+      margin: 1.5rem 0;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    /* ---------- links ---------- */
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .links a {
+      text-decoration: none;
+      color: white;
+      background-color: rgba(102, 204, 255, 0.2);
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      border: 1px solid #66ccff;
+      transition: background-color 0.3s;
+    }
+
+    .links a:hover {
+      background-color: #66ccff;
+      color: black;
+    }
+  </style>
+</head>
+<body>
+  <!-- ⭐ Starry background video -->
+  <video class="video-bg" autoplay muted loop playsinline>
+    <source src="background.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+  </video>
+
+  <!-- ✨ Typing welcome header -->
+  <h1 class="typewriter">Welcome, it's wonderful to meet you.</h1>
+
+  <!-- 🧊 Glass panel content -->
+  <div class="glass-panel">
+    <div class="timeline">
+      <div class="timeline-item">
+        <img src="2014.jpg" alt="Childhood Photo">
+        <span>2014</span>
+      </div>
+      <div class="timeline-item">
+        <img src="2020.jpg" alt="High School Photo">
+        <span>2020</span>
+      </div>
+      <div class="timeline-item">
+        <img src="2025.jpg" alt="Graduation Photo">
+        <span>2025</span>
+      </div>
+    </div>
+
+    <div class="about-text">
+      Hi! As you already know, I’m Steve — a Master’s student in Data Science at UW–Madison.<br />
+      Being from small‑town Wisconsin, I carry with me the enduring values of hard work, discipline, and community — principles I strive to uphold as a reflection of my upbringing and the place I’m proud to call home.<br /><br />
+
+      During my undergraduate years, I spent most of my time conducting EEG and epilepsy research — publishing several preprints and developing a deep understanding of time‑series processing and applied machine learning. Alongside my interest in theoretical coursework, I built a foundation for strong analytical thinking and critical insight.<br /><br />
+
+      Now, I’m refining my practical engineering skillset: mastering distributed systems, diving deep into modern ML libraries, and sharpening my coding fluency every single day. I'm preparing for the next chapter — one where I join a visionary, collaborative team in a fast‑paced environment where ideas evolve quickly and impact runs deep.<br /><br />
+
+      Thanks for stopping by my corner of the galaxy.
+    </div>
+
+    <div class="links">
+      <a href="https://github.com/stevehaworth02" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/stevenhaworth02/" target="_blank">LinkedIn</a>
+      <a href="resume.pdf" target="_blank">Resume</a>
+      <a href="academics.html">Academics</a>
+      <a href="symposium.html">Symposium</a>
+    </div>
+  </div>
+</body>
+</html>
