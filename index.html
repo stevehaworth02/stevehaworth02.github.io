@@ -6,14 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    /* === base styles unchanged === */
     *{margin:0;padding:0;box-sizing:border-box}
-    html,body{height:100%;font-family:'Inter',sans-serif;color:#fff;scroll-behavior:smooth;background:#000}
 
-    .video-bg{position:fixed;top:0;left:0;min-width:100%;min-height:100%;object-fit:cover;z-index:-1}
+    html,body{
+      height:100%;
+      font-family:'Inter',sans-serif;
+      color:#fff;scroll-behavior:smooth;background:#000;
+    }
 
-    .intro{display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;
-           backdrop-filter:brightness(.9);text-align:center}
+    .video-bg{
+      position:fixed;top:0;left:0;
+      min-width:100%;min-height:100%;
+      object-fit:cover;z-index:-1;
+    }
+
+    /* intro section – brightness filter removed */
+    .intro{
+      display:flex;flex-direction:column;justify-content:center;align-items:center;
+      height:100vh;
+      /* backdrop-filter:brightness(.9); */ /* removed */
+      text-align:center;
+    }
     .intro h1{font-size:2.5rem;max-width:90%;white-space:pre-wrap}
     #typewriter::after{content:'|';animation:blink 1s infinite}
     @keyframes blink{0%,50%,100%{opacity:1}25%,75%{opacity:0}}
@@ -23,11 +36,16 @@
     .scroll-down{font-size:4rem;animation:bounce 2s infinite;cursor:pointer}
     @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
 
-    .content{display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;
-             backdrop-filter:brightness(.9)}
+    .content{
+      display:flex;flex-direction:column;justify-content:center;align-items:center;
+      height:100vh;backdrop-filter:brightness(.9);
+    }
 
-    .panel{background:rgba(30,30,30,.85);padding:2rem 3rem;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,.7);
-           display:flex;flex-direction:column;gap:1rem;align-items:center}
+    .panel{
+      background:rgba(30,30,30,.85);padding:2rem 3rem;border-radius:12px;
+      box-shadow:0 8px 20px rgba(0,0,0,.7);
+      display:flex;flex-direction:column;gap:1rem;align-items:center;
+    }
     .panel a{text-decoration:none;color:#66ccff;font-size:1.2rem;font-weight:600}
     .panel a:hover{color:#fff}
   </style>
@@ -51,7 +69,6 @@
   <!-- quick links panel -->
   <section class="content" id="main">
     <div class="panel">
-      <!-- 🆕 About link goes first -->
       <a href="#about">About Me</a>
       <a href="symposium.html">Symposium</a>
       <a href="https://github.com/stevehaworth02" target="_blank">GitHub</a>
@@ -59,9 +76,8 @@
     </div>
   </section>
 
-  <!-- 🆕 placeholder About section -->
+  <!-- placeholder About section -->
   <section id="about" style="height:100vh;display:flex;justify-content:center;align-items:center;">
-    <!-- you can flesh this out later -->
     <h2 style="font-size:2rem;">About Me (coming soon)</h2>
   </section>
 
