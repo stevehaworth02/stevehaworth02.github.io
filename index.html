@@ -18,15 +18,12 @@
       overflow: hidden;
       font-family: 'Inter', sans-serif;
       color: white;
-
-      /* Modified flex container */
       display: flex;
       flex-direction: column;
-      align-items: center; /* Removed justify-content: center */
+      align-items: center;
       scroll-behavior: smooth;
     }
 
-    /* ---------- starry video background ---------- */
     .video-bg {
       position: fixed;
       top: 0;
@@ -37,35 +34,38 @@
       z-index: 0;
     }
 
-    /* ---------- typing header ---------- */
     .typewriter {
-      display: inline-block;
+      display: block;
       font-size: 2rem;
       font-weight: 700;
       color: #fff;
       white-space: nowrap;
       overflow: hidden;
-      border-right: 2px solid #fff;
       z-index: 2;
-      animation: typing 4s steps(40, end) forwards,
-                 blink 0.8s step-end infinite;
-      
-      /* New positioning */
       position: absolute;
       top: 20px;
       left: 50%;
       transform: translateX(-50%);
+      animation: 
+        typing 4s steps(40, end) forwards,
+        blink 0.8s step-end 8;
     }
 
     @keyframes typing {
-      from { width: 0; }
-      to   { width: 100%; }
+      from { 
+        width: 0;
+        border-right: 2px solid #fff;
+      }
+      to { 
+        width: min-content;
+        border-right: 2px solid transparent;
+      }
     }
+
     @keyframes blink {
       50% { border-color: transparent; }
     }
 
-    /* ---------- glass panel ---------- */
     .glass-panel {
       position: relative;
       background: rgba(15, 15, 30, 0.75);
@@ -80,13 +80,10 @@
       width: 90%;
       z-index: 1;
       margin: 20px;
-      
-      /* New centering */
       margin-top: auto;
       margin-bottom: auto;
     }
 
-    /* ---------- timeline ---------- */
     .timeline {
       display: flex;
       justify-content: center;
@@ -115,14 +112,12 @@
       color: #aaa;
     }
 
-    /* ---------- about section ---------- */
     .about-text {
       margin: 1.5rem 0;
       font-size: 1.1rem;
       line-height: 1.6;
     }
 
-    /* ---------- links ---------- */
     .links {
       display: flex;
       flex-wrap: wrap;
@@ -148,16 +143,13 @@
   </style>
 </head>
 <body>
-  <!-- ⭐ Starry background video -->
   <video class="video-bg" autoplay muted loop playsinline>
     <source src="background.mp4" type="video/mp4">
     Your browser does not support HTML5 video.
   </video>
 
-  <!-- ✨ Typing welcome header -->
   <h1 class="typewriter">Welcome, it's wonderful to meet you.</h1>
 
-  <!-- 🧊 Glass panel content -->
   <div class="glass-panel">
     <div class="timeline">
       <div class="timeline-item">
