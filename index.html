@@ -24,6 +24,7 @@
       scroll-behavior: smooth;
     }
 
+    /* ---------- starry video background ---------- */
     .video-bg {
       position: fixed;
       top: 0;
@@ -34,6 +35,33 @@
       z-index: 0;
     }
 
+    /* ---------- typing header ---------- */
+    .typewriter {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid #fff;
+      z-index: 2;
+      animation: typing 4s steps(40, end) forwards,
+                 blink 0.8s step-end infinite;
+    }
+
+    @keyframes typing {
+      from { width: 0; }
+      to   { width: 100%; }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    /* ---------- glass panel ---------- */
     .glass-panel {
       position: relative;
       background: rgba(15, 15, 30, 0.75);
@@ -42,7 +70,7 @@
       padding: 2rem;
       text-align: center;
       backdrop-filter: blur(12px);
-      -webkit-backup-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
       max-width: 900px;
       width: 90%;
@@ -50,6 +78,7 @@
       margin: 20px;
     }
 
+    /* ---------- timeline ---------- */
     .timeline {
       display: flex;
       justify-content: center;
@@ -78,12 +107,14 @@
       color: #aaa;
     }
 
+    /* ---------- about section ---------- */
     .about-text {
       margin: 1.5rem 0;
       font-size: 1.1rem;
       line-height: 1.6;
     }
 
+    /* ---------- links ---------- */
     .links {
       display: flex;
       flex-wrap: wrap;
@@ -115,6 +146,9 @@
     Your browser does not support HTML5 video.
   </video>
 
+  <!-- ✨ Typing welcome header -->
+  <h1 class="typewriter">Welcome, it's wonderful to meet you.</h1>
+
   <!-- 🧊 Glass panel content -->
   <div class="glass-panel">
     <div class="timeline">
@@ -132,17 +166,16 @@
       </div>
     </div>
 
-  <div class="about-text">
-    Hi! As you already know, I’m Steve — a Master’s student in Data Science at UW–Madison.<br />
-    Being from small-town Wisconsin, I carry with me the enduring values of hard work, discipline, and community — principles I strive to uphold as a reflection of my upbringing and the place I’m proud to call home.<br /><br />
+    <div class="about-text">
+      Hi! As you already know, I’m Steve — a Master’s student in Data Science at UW–Madison.<br />
+      Being from small-town Wisconsin, I carry with me the enduring values of hard work, discipline, and community — principles I strive to uphold as a reflection of my upbringing and the place I’m proud to call home.<br /><br />
 
-    During my undergraduate years, I spent most of my time conducting EEG and epilepsy research — publishing several preprints and developing a deep understanding of time series processing and applied machine learning. Alongside my interest in theoretical coursework, I built a foundation for strong analytical thinking and critical insight.<br /><br />
+      During my undergraduate years, I spent most of my time conducting EEG and epilepsy research — publishing several preprints and developing a deep understanding of time series processing and applied machine learning. Alongside my interest in theoretical coursework, I built a foundation for strong analytical thinking and critical insight.<br /><br />
 
-    Now, I’m refining my practical engineering skillset: mastering distributed systems, diving deep into modern ML libraries, and sharpening my coding fluency every single day. I'm preparing for the next chapter — one where I join a visionary, collaborative team in a fast-paced environment where ideas evolve quickly and impact runs deep.<br /><br />
+      Now, I’m refining my practical engineering skillset: mastering distributed systems, diving deep into modern ML libraries, and sharpening my coding fluency every single day. I'm preparing for the next chapter — one where I join a visionary, collaborative team in a fast-paced environment where ideas evolve quickly and impact runs deep.<br /><br />
 
-    Thanks for stopping by my corner of the galaxy.
-  </div>
-
+      Thanks for stopping by my corner of the galaxy.
+    </div>
 
     <div class="links">
       <a href="https://github.com/stevehaworth02" target="_blank">GitHub</a>
@@ -152,6 +185,5 @@
       <a href="symposium.html">Symposium</a>
     </div>
   </div>
-
 </body>
 </html>
