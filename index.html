@@ -19,11 +19,10 @@
       font-family: 'Inter', sans-serif;
       color: white;
 
-      /* 🔽 stack header above panel while keeping everything centered */
+      /* Modified flex container */
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      align-items: center; /* Removed justify-content: center */
       scroll-behavior: smooth;
     }
 
@@ -47,11 +46,15 @@
       white-space: nowrap;
       overflow: hidden;
       border-right: 2px solid #fff;
-      margin-bottom: 1.5rem;     /* spacing above the panel */
       z-index: 2;
-
       animation: typing 4s steps(40, end) forwards,
                  blink 0.8s step-end infinite;
+      
+      /* New positioning */
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     @keyframes typing {
@@ -77,6 +80,10 @@
       width: 90%;
       z-index: 1;
       margin: 20px;
+      
+      /* New centering */
+      margin-top: auto;
+      margin-bottom: auto;
     }
 
     /* ---------- timeline ---------- */
