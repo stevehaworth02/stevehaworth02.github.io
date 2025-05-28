@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Resume – Steven Haworth</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{
+      width:100%;height:100%;
+      font-family:'Inter',sans-serif;
+      background:black;color:white;
+      display:flex;justify-content:center;align-items:center;
+      overflow:hidden
+    }
+    .video-bg{position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0}
+    .glass{
+      background:rgba(15,15,30,.75);
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:16px;
+      padding:2rem;
+      max-width:900px;width:90%;
+      text-align:center;
+      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+      z-index:1
+    }
+    h1{margin-bottom:1.5rem;font-size:2rem}
+    .resume-img{
+      width:100%;
+      max-width:750px;   /* keeps it from blowing up on huge screens */
+      height:auto;
+      border:2px solid #66ccff;
+      border-radius:8px;
+      box-shadow:0 4px 20px rgba(0,0,0,.6);
+    }
+    .links{
+      margin-top:1.5rem;
+    }
+    .links a{
+      color:#66ccff;text-decoration:none;
+    }
+    .links a:hover{text-decoration:underline}
+  </style>
+</head>
+<body>
+  <video class="video-bg" autoplay muted loop playsinline>
+    <source src="background.mp4" type="video/mp4">
+  </video>
+
+  <div class="glass">
+    <h1>My Resume</h1>
+
+    <!-- swap resume.jpg for whatever file you actually use -->
+    <img src="resume.jpg" alt="Steven Haworth Resume" class="resume-img">
+
+    <div class="links">
+      <!-- optional: direct PDF download -->
+      <a href="resume.pdf" target="_blank">Download PDF</a> &nbsp;|&nbsp; 
+      <a href="index.html">Back to home</a>
+    </div>
+  </div>
+</body>
+</html>
