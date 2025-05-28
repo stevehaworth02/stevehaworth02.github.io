@@ -42,19 +42,20 @@
       white-space: nowrap;
       overflow: hidden;
       margin: 0 auto 2rem auto;
+      border-right: 2px solid transparent;
       animation: 
-        typing 4s steps(40, end) forwards,
-        blink 0.8s step-end 8;
+        typing 3.5s steps(36, end) forwards,
+        blink 0.75s step-end 8;
     }
 
     @keyframes typing {
       from { 
         width: 0;
-        border-right: 2px solid #fff;
+        border-right-color: #fff;
       }
       to { 
-        width: min-content;
-        border-right: 2px solid transparent;
+        width: 100%;
+        border-right-color: transparent;
       }
     }
 
