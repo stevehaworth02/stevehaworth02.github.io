@@ -21,6 +21,21 @@
       object-fit:cover;z-index:0;
     }
 
+    /* navigation at top */
+    .top-nav{
+      position:relative;z-index:10;
+      width:100%;max-width:900px;
+      display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;
+      margin:2rem auto 1rem;padding:0 20px;
+    }
+    .top-nav a{
+      text-decoration:none;color:#fff;background:rgba(102,204,255,.2);
+      padding:.75rem 1.5rem;border-radius:8px;border:1px solid #66ccff;
+      transition:background-color .3s;white-space:normal;text-align:center;
+      font-size:.9rem;
+    }
+    .top-nav a:hover{background:#66ccff;color:#000}
+
     /* typewriter heading */
     .typewriter{
       display:block;font-size:2rem;font-weight:700;
@@ -49,15 +64,6 @@
 
     /* about text */
     .about-text{margin:1.5rem 0;font-size:1.1rem;line-height:1.6}
-
-    /* links */
-    .links{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;margin-top:1.5rem}
-    .links a{
-      text-decoration:none;color:#fff;background:rgba(102,204,255,.2);
-      padding:.75rem 1.5rem;border-radius:8px;border:1px solid #66ccff;
-      transition:background-color .3s;white-space:normal;text-align:center;
-    }
-    .links a:hover{background:#66ccff;color:#000}
   </style>
 </head>
 <body>
@@ -66,6 +72,15 @@
     <source src="background.mp4" type="video/mp4">
     Your browser does not support HTML5 video.
   </video>
+
+  <!-- top navigation -->
+  <div class="top-nav">
+    <a href="https://github.com/stevehaworth02" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/stevenhaworth02/" target="_blank">LinkedIn</a>
+    <a href="resume.html">Resume</a>
+    <a href="academics.html">Academics</a>
+    <a href="symposium.html">Symposium</a>
+  </div>
 
   <div class="glass-panel">
     <h1 class="typewriter">Welcome, it's wonderful to e-meet you.</h1>
@@ -79,21 +94,11 @@
 
     <!-- about section -->
     <div class="about-text">
-      Hi! As you already know, I’m Steve — a Master’s student in Data Science at UW–Madison.<br />
-      Being from small‑town Wisconsin, I carry with me the enduring values of hard work, discipline, and community — principles I strive to uphold as a reflection of my upbringing and the place I’m proud to call home.<br /><br />
+      Hi! As you already know, I'm Steve — a Master's student in Data Science at UW–Madison.<br />
+      Being from small‑town Wisconsin, I carry with me the enduring values of hard work, discipline, and community — principles I strive to uphold as a reflection of my upbringing and the place I'm proud to call home.<br /><br />
       During my undergraduate years, I spent most of my time conducting EEG and epilepsy research — publishing several preprints and developing a deep understanding of time‑series processing and applied machine learning. Alongside my interest in theoretical coursework, I built a foundation for strong analytical thinking and problem solving.<br /><br />
-      Now, I’m refining my practical engineering skillset: mastering distributed systems, diving deep into modern ML libraries, and sharpening my coding fluency every single day. I'm preparing for the next chapter — one where I join a visionary, collaborative team in a fast‑paced environment where ideas evolve quickly and impact runs deep.<br /><br />
+      Now, I'm refining my practical engineering skillset: mastering distributed systems, diving deep into modern ML libraries, and sharpening my coding fluency every single day. I'm preparing for the next chapter — one where I join a visionary, collaborative team in a fast‑paced environment where ideas evolve quickly and impact runs deep.<br /><br />
       Thanks for stopping by my corner of the galaxy.
-    </div>
-
-    <!-- nav links -->
-    <div class="links">
-      <a href="https://github.com/stevehaworth02" target="_blank">GitHub</a>
-      <a href="https://www.linkedin.com/in/stevenhaworth02/" target="_blank">LinkedIn</a>
-      <!-- inside the .links div -->
-      <a href="resume.html">Resume</a>
-      <a href="academics.html">Academics</a>
-      <a href="symposium.html">Symposium</a>
     </div>
   </div>
 </body>
