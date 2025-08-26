@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Community Engagement - Neural By Nature</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+
+    html,body{
+      width:100%;height:100%;overflow-y:auto;
+      font-family:'Inter',sans-serif;color:#fff;
+      display:flex;flex-direction:column;align-items:center;
+      scroll-behavior:smooth;
+    }
+
+    /* video background */
+    .video-bg{
+      position:fixed;top:0;left:0;width:100%;height:100%;
+      object-fit:cover;z-index:0;
+    }
+
+
+
+    /* Community Engagement Section */
+    .community-panel {
+      position:relative;z-index:10;background:rgba(15,15,30,.75);
+      border:1px solid rgba(255,255,255,.1);border-radius:16px;
+      margin:2rem auto;padding:2rem;text-align:center;
+      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+      box-shadow:0 10px 30px rgba(0,0,0,.7);
+      max-width:900px;width:90%;
+    }
+
+    .section-title {
+      font-size:2.5rem;font-weight:700;margin-bottom:2rem;
+      color:#66ccff;
+    }
+
+    .jobs-list {
+      display:flex;flex-direction:column;gap:2rem;
+    }
+
+    .job-item {
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.1);border-radius:12px;
+      padding:2rem;text-align:left;transition:background-color .3s;
+    }
+
+    .job-item:hover {
+      background:rgba(255,255,255,.1);
+    }
+
+    .job-title {
+      font-size:1.8rem;font-weight:600;margin-bottom:1rem;
+      color:#4a9eff;
+    }
+
+    .job-content {
+      font-size:1.1rem;color:#aaa;line-height:1.6;
+    }
+
+    .back-home {
+      margin-top:2rem;
+    }
+
+    .back-home a {
+      text-decoration:none;color:#66ccff;background:rgba(102,204,255,.1);
+      padding:.75rem 1.5rem;border-radius:8px;border:1px solid #66ccff;
+      transition:background-color .3s;font-size:.9rem;
+    }
+
+    .back-home a:hover {
+      background:#66ccff;color:#000;
+    }
+  </style>
+</head>
+<body>
+  <!-- starry video background -->
+  <video class="video-bg" autoplay muted loop playsinline>
+    <source src="background.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+  </video>
+
+  <!-- Community Engagement Section -->
+  <div class="community-panel">
+    <h2 class="section-title">Community Engagement</h2>
+    
+    <div class="jobs-list">
+      <div class="job-item">
+        <h3 class="job-title">Student Leadership Council</h3>
+        <div class="job-content">
+          As a member of the Student Leadership Council, I had the privilege of working closely with stakeholders and university administrators to ensure exceptional experiences for both student workers and visitors across our campus. My role involved thoughtful collaboration with key decision-makers to address the unique challenges of managing a dynamic university environment.
+          
+          One of my most significant responsibilities was ensuring the safety and positive experience of visitors to the Memorial Union, a cherished historical site that welcomes over 3 million annual visitors. This role required me to balance the preservation of the Union's rich heritage with modern safety protocols and visitor experience standards. I worked diligently with university administrators to implement policies that maintained the welcoming atmosphere of this iconic location while prioritizing the well-being of all who pass through its doors.
+          
+          Through these experiences, I developed a deep understanding of how to navigate complex stakeholder relationships, advocate for student and visitor needs, and contribute to meaningful institutional change that benefits our entire university community.
+        </div>
+      </div>
+      
+      <div class="job-item">
+        <h3 class="job-title">IT Technician</h3>
+        <div class="job-content">
+          As an on-site IT Technician at the Wisconsin Energy Institute, my most impactful contribution was helping allocate compute resources for researchers' scripts. I worked closely with research teams to understand their computational needs and matched them with the appropriate machines based on specific requirements for memory, storage, CPU, and GPU resources. This role required deep technical knowledge and the ability to translate complex research requirements into optimal hardware configurations.
+          
+          To modernize operations, I automated many IT processes using PowerShell, significantly improving efficiency and reducing manual workload. Additionally, I developed and delivered an AI 101 course for the IT team, helping them understand emerging technologies and prepare for the future of IT operations. This experience strengthened my technical skills while developing my ability to bridge the gap between complex research needs and practical IT solutions.
+          
+          Beyond these specialized contributions, I also provided comprehensive technical support and infrastructure management for the dynamic research environment. My role involved troubleshooting every imaginable technical problem that users encountered, from simple software issues to complex system failures, ensuring researchers could focus on their critical work without technical interruptions. I played a key role in managing data centers and performing computer repairs, supporting the overall IT infrastructure that enabled cutting-edge research.
+        </div>
+      </div>
+      
+      <div class="job-item">
+        <h3 class="job-title">Student Supervisor</h3>
+        <div class="job-content">
+          As a Student Supervisor in dining services, I was responsible for overseeing student dining operations and leading comprehensive training programs for new staff members. My role encompassed developing and implementing training protocols that covered three critical areas: exceptional customer service, effective crisis response procedures, and strict food safety standards.
+          
+          Over my three-year employment, I had the privilege of managing and training over 1,200 new hires who represented diverse cultures from around the world. This experience taught me the importance of creating inclusive training environments that accommodate different learning styles, cultural backgrounds, and language preferences. I developed training materials and approaches that ensured every team member, regardless of their background, could excel in their roles while maintaining the high standards required in food service operations.
+          
+          This position strengthened my leadership skills in managing large-scale training initiatives, fostering inclusive workplace environments, and ensuring operational excellence across diverse teams.
+        </div>
+      </div>
+    </div>
+
+    <div class="back-home">
+      <a href="index.html">← Back to Home</a>
+    </div>
+  </div>
+</body>
+</html>
