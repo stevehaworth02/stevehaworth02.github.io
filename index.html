@@ -4,100 +4,292 @@
   <meta charset="UTF-8" />
   <title>Neural By Nature</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}
+    * { margin:0; padding:0; box-sizing:border-box; }
 
-    html,body{
-      width:100%;height:100%;overflow-y:auto;
-      font-family:'Inter',sans-serif;color:#fff;
-      display:flex;flex-direction:column;align-items:center;
+    html, body{
+      width:100%;
+      height:100%;
+      overflow-y:auto;
+      font-family:'Inter', sans-serif;
+      color:#fff;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
       scroll-behavior:smooth;
+      background:#050814; /* fallback if video fails */
     }
 
-    /* video background */
+    /* ----------------------------
+       Background video + overlay
+       ---------------------------- */
     .video-bg{
-      position:fixed;top:0;left:0;width:100%;height:100%;
-      object-fit:cover;z-index:0;
+      position:fixed;
+      top:0; left:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      z-index:0;
+
+      /* Make the background subtle */
+      filter: blur(6px) brightness(0.35) contrast(0.9);
+      transform: scale(1.1); /* prevent blur edges */
     }
 
-    /* top header with branding and navigation */
+    .bg-overlay{
+      position:fixed;
+      top:0; left:0;
+      width:100%;
+      height:100%;
+      background:rgba(5,10,20,0.55);
+      z-index:1;
+    }
+
+    /* ----------------------------
+       Top header (brand + nav)
+       ---------------------------- */
     .top-header{
-      position:relative;z-index:10;background:rgba(15,15,30,.75);
-      border:1px solid rgba(255,255,255,.1);border-radius:16px;
-      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-      box-shadow:0 10px 30px rgba(0,0,0,.7);
-      width:100%;max-width:900px;margin:2rem auto 1rem;padding:1.5rem 20px;
+      position:relative;
+      z-index:10;
+      background:rgba(10,15,30,0.88);
+      border:1px solid rgba(102,204,255,.22);
+      border-radius:16px;
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      box-shadow:
+        0 20px 60px rgba(0,0,0,.85),
+        0 0 40px rgba(102,204,255,.10);
+      width:100%;
+      max-width:900px;
+      margin:2rem auto 1.25rem;
+      padding:1.6rem 20px;
       text-align:center;
     }
-    
+
     .brand-title{
-      font-size:2.5rem;font-weight:700;font-style:italic;margin-bottom:.5rem;
+      font-size:2.6rem;
+      font-weight:700;
+      font-style:italic;
+      margin-bottom:.35rem;
       background:linear-gradient(45deg, #66ccff, #ffffff);
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
       background-clip:text;
     }
-    
+
     .brand-byline{
-      font-size:1rem;color:#aaa;margin-bottom:1.5rem;
+      font-size:1rem;
+      color:#b9c6d6;
+      margin-bottom:1.25rem;
     }
-    
+
     .top-nav{
-      display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:1rem;
     }
+
     .top-nav a{
-      text-decoration:none;color:#fff;background:rgba(102,204,255,.2);
-      padding:.75rem 1.5rem;border-radius:8px;border:1px solid #66ccff;
-      transition:background-color .3s;white-space:normal;text-align:center;
-      font-size:.9rem;
+      text-decoration:none;
+      color:#fff;
+      background:rgba(102,204,255,.14);
+      padding:.75rem 1.5rem;
+      border-radius:10px;
+      border:1px solid rgba(102,204,255,.55);
+      transition: background-color .25s, transform .15s, color .25s;
+      white-space:normal;
+      text-align:center;
+      font-size:.92rem;
+      font-weight:600;
     }
-    .top-nav a:hover{background:#66ccff;color:#000}
-
-    /* typewriter heading */
-    .typewriter{
-      display:block;font-size:2rem;font-weight:700;
-      white-space:nowrap;overflow:hidden;margin:0 auto 2rem;
-      border-right:2px solid transparent;
-      animation:typing 3.5s steps(36,end) forwards,blink .75s step-end 8;
+    .top-nav a:hover{
+      background:#66ccff;
+      color:#06101c;
+      transform: translateY(-1px);
     }
-    @keyframes typing{from{width:0;border-right-color:#fff}to{width:100%;border-right-color:transparent}}
-    @keyframes blink{50%{border-color:transparent}}
 
-    /* glass panel */
+    /* ----------------------------
+       Main panel
+       ---------------------------- */
     .glass-panel{
-      position:relative;background:rgba(15,15,30,.75);
-      border:1px solid rgba(255,255,255,.1);border-radius:16px;
-      padding:2rem;text-align:center;
-      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-      box-shadow:0 10px 30px rgba(0,0,0,.7);
-      max-width:900px;width:90%;margin:auto 20px;
+      position:relative;
+      z-index:10;
+      background:rgba(10,15,30,0.88);
+      border:1px solid rgba(102,204,255,.22);
+      border-radius:16px;
+      padding:2.5rem 2rem;
+      text-align:center;
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      box-shadow:
+        0 20px 60px rgba(0,0,0,.9),
+        0 0 40px rgba(102,204,255,.12);
+      max-width:900px;
+      width:90%;
+      margin:0 auto 2.25rem;
     }
 
-    /* timeline */
-    .timeline{display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem;flex-wrap:wrap}
-    .timeline-item{display:flex;flex-direction:column;align-items:center}
-    .timeline-item img{width:150px;height:150px;object-fit:cover;border-radius:50%;border:2px solid #fff}
-    .timeline-item span{margin-top:.5rem;font-size:.95rem;color:#aaa}
+    /* ----------------------------
+       Typewriter heading
+       ---------------------------- */
+    .typewriter{
+      display:block;
+      font-size:1.9rem;
+      font-weight:700;
+      white-space:nowrap;
+      overflow:hidden;
+      margin:0 auto 1.25rem;
+      border-right:2px solid transparent;
+      animation: typing 3.2s steps(42,end) forwards, blink .75s step-end 8;
+      max-width:100%;
+    }
+    @keyframes typing{
+      from { width:0; border-right-color:#fff; }
+      to   { width:100%; border-right-color:transparent; }
+    }
+    @keyframes blink{ 50%{ border-color:transparent; } }
 
-        /* about text */
-    .about-text{margin:1.5rem 0;font-size:1.1rem;line-height:1.6}
+    /* On small screens, remove the typewriter constraint */
+    @media (max-width: 650px){
+      .typewriter{
+        white-space:normal;
+        border-right:none;
+        animation:none;
+        font-size:1.55rem;
+      }
+    }
+
+    /* ----------------------------
+       Hero content
+       ---------------------------- */
+    .hero{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:center;
+      gap:1.5rem;
+      text-align:left;
+      margin-top:.25rem;
+    }
+
+    .headshot{
+      width:140px;
+      height:140px;
+      border-radius:50%;
+      object-fit:cover;
+      border:2px solid rgba(102,204,255,.9);
+      box-shadow:0 10px 30px rgba(0,0,0,.65);
+      background:rgba(255,255,255,.06);
+    }
+
+    .hero-text{
+      max-width:620px;
+    }
+
+    .hero-name{
+      font-size:1.65rem;
+      font-weight:700;
+      margin-bottom:.25rem;
+    }
+
+    .hero-subtitle{
+      color:#dbe7f5;
+      line-height:1.6;
+      font-size:1.05rem;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.55rem;
+      margin:.9rem 0 1rem;
+    }
+
+    .chip{
+      font-size:.9rem;
+      color:#eaf7ff;
+      padding:.45rem .75rem;
+      border-radius:999px;
+      border:1px solid rgba(102,204,255,.55);
+      background:rgba(102,204,255,.12);
+      letter-spacing:.1px;
+    }
+
+    .cta-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.75rem;
+      margin-top:.6rem;
+    }
+
+    .cta{
+      display:inline-block;
+      text-decoration:none;
+      font-weight:700;
+      padding:.75rem 1.1rem;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      transition: transform .15s, background-color .25s, border-color .25s;
+    }
+
+    .cta.primary{
+      border-color:rgba(102,204,255,.75);
+      background:rgba(102,204,255,.16);
+    }
+
+    .cta:hover{
+      transform: translateY(-1px);
+      background:rgba(255,255,255,.10);
+      border-color:rgba(102,204,255,.55);
+    }
+
+    /* ----------------------------
+       Supporting text
+       ---------------------------- */
+    .about-text{
+      margin:1.5rem auto 0;
+      font-size:1.05rem;
+      line-height:1.75;
+      color:#e7eef8;
+      max-width:780px;
+      text-align:left;
+    }
+
+    .about-text strong{
+      color:#ffffff;
+    }
+
+    .footer-note{
+      margin-top:1.25rem;
+      color:#b9c6d6;
+      font-size:.95rem;
+      text-align:left;
+      max-width:780px;
+    }
   </style>
 </head>
+
 <body>
-  <!-- starry video background -->
+  <!-- Background video -->
   <video class="video-bg" autoplay muted loop playsinline>
     <source src="background.mp4" type="video/mp4">
     Your browser does not support HTML5 video.
   </video>
+  <div class="bg-overlay"></div>
 
-  <!-- top header with branding and navigation -->
+  <!-- Top header -->
   <div class="top-header">
     <h1 class="brand-title">Neural by Nature</h1>
-    <p class="brand-byline">By Steven Haworth</p>
-    
+    <p class="brand-byline">By Steven Haworth • Clinical Machine Learning • EEG Research</p>
+
     <div class="top-nav">
-      <a href="https://github.com/stevehaworth02" target="_blank">GitHub</a>
-      <a href="https://www.linkedin.com/in/stevenhaworth02/" target="_blank">LinkedIn</a>
+      <a href="https://github.com/stevehaworth02" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://www.linkedin.com/in/stevenhaworth02/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
       <a href="resume.html">Resume</a>
       <a href="academics.html">Academics</a>
       <a href="symposium.html">Symposium</a>
@@ -105,22 +297,45 @@
     </div>
   </div>
 
+  <!-- Main content panel -->
   <div class="glass-panel">
-    <h1 class="typewriter">Welcome, it's wonderful to e-meet you.</h1>
+    <h1 class="typewriter">Clinical ML for EEG, Seizure Detection, and Consciousness Research</h1>
 
-    <!-- timeline photos -->
-    <div class="timeline">
-      <div class="timeline-item"><img src="2014.jpg" alt="Childhood Photo"><span>2014</span></div>
-      <div class="timeline-item"><img src="2020.jpg" alt="High School Photo"><span>2020</span></div>
-      <div class="timeline-item"><img src="2025.jpg" alt="Graduation Photo"><span>2025</span></div>
+    <div class="hero">
+      <!-- Replace headshot.jpg with your preferred professional photo (or remove the img if you want no photo). -->
+      <img class="headshot" src="2025.jpg" alt="Steven Haworth headshot">
+
+      <div class="hero-text">
+        <div class="hero-name">Steven Haworth</div>
+        <div class="hero-subtitle">
+          Master’s student in Data Science at UW–Madison building human-centered clinical ML systems for EEG monitoring,
+          seizure detection, and artifact rejection.
+        </div>
+
+        <div class="chips">
+          <span class="chip">Argus: 96% seizure detection</span>
+          <span class="chip">98% artifact rejection</span>
+          <span class="chip">Debuting at ACNS 2026</span>
+        </div>
+
+        <div class="cta-row">
+          <a class="cta primary" href="resume.html">View Resume</a>
+          <a class="cta" href="academics.html">Research & Academics</a>
+          <!-- Put your real email here -->
+          <a class="cta" href="mailto:YOUR_EMAIL@domain.com">Contact</a>
+        </div>
+      </div>
     </div>
 
-    <!-- about section -->
     <div class="about-text">
-      I'm Steven, a Master's student in at UW–Madison. Being from small‑town Wisconsin, I developed enduring values of hard work, discipline, and community — principles I strive to uphold as a reflection of my upbringing and the place I'm proud to call home.
-      I spent most of my undergraduate years conducting ML and Healthcare research, contributing to several papers and developing a deep understanding of applied data science. I also built a foundation for strong analytical thinking and problem solving.
-      Now, I'm refining my engineering skillset and sharpening my coding fluency every day. I'm preparing for the next chapter, one where I join a visionary, collaborative team in a fast‑paced environment where ideas evolve quickly and impact runs deep.<br /><br />
-      Thanks for stopping by my corner of the galaxy.
+      <strong>Current focus:</strong> end-to-end EEG ML pipelines (data curation → training → evaluation → deployment-ready tooling),
+      with an emphasis on reliability: robustness, calibration, and interpretable failure modes so outputs can be trusted in real workflows.
+      <br><br>
+      I’m always open to research collaboration, clinical ML discussions, and opportunities that value both engineering rigor and impact.
+    </div>
+
+    <div class="footer-note">
+      Tip: If you want to keep the timeline photos, place them on a separate “About” page under “My path into clinical ML” so your homepage stays professional-first.
     </div>
   </div>
 </body>
