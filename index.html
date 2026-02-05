@@ -97,7 +97,11 @@ html,body{
 }
 @keyframes blink{50%{opacity:0;}}
 
-/* Announcement banner (carousel) — sits BETWEEN title and headshot panel */
+.cursor.hidden{
+  display:none;
+}
+
+/* Announcement banner */
 .announcements{
   margin:0.2rem auto 1.4rem;
   max-width:820px;
@@ -118,41 +122,26 @@ html,body{
   transform:translateY(0);
   transition: opacity 420ms ease, transform 420ms ease;
 }
+.announcement-text.fade-out{opacity:0;transform:translateY(4px);}
+.announcement-text.fade-in{opacity:1;transform:translateY(0);}
 
-.announcement-text.fade-out{
-  opacity:0;
-  transform:translateY(4px);
-}
-
-.announcement-text.fade-in{
-  opacity:1;
-  transform:translateY(0);
-}
-
-/* HERO PANEL (WRAPPED TEXT) */
+/* HERO (WRAPPED TEXT) */
 .hero{
   text-align:left;
   max-width:820px;
   margin:0 auto;
 }
 
-/* Float makes text wrap */
 .headshot{
   width:150px;height:150px;
   border-radius:50%;
   object-fit:cover;
   border:2px solid #66ccff;
-
   float:left;
   margin:0.2rem 1.25rem 0.6rem 0;
 }
 
-/* Clear float */
-.hero::after{
-  content:"";
-  display:block;
-  clear:both;
-}
+.hero::after{content:"";display:block;clear:both;}
 
 .hero-name{
   font-size:1.6rem;
@@ -162,8 +151,8 @@ html,body{
 
 .hero-subtitle{
   color:#dbe7f5;
-  line-height:1.7;
-  margin-top:0.35rem;
+  line-height:1.75;
+  margin-top:0.45rem;
 }
 
 /* About */
@@ -173,19 +162,15 @@ html,body{
   color:#e7eef8;
 }
 
-/* Mobile: stack headshot above text */
+/* Mobile */
 @media (max-width:650px){
   .headshot{
     float:none;
     display:block;
     margin:0 auto 1rem auto;
   }
-  .hero{
-    text-align:center;
-  }
-  .hero-subtitle{
-    text-align:left;
-  }
+  .hero{text-align:center;}
+  .hero-subtitle{text-align:left;}
 }
 </style>
 </head>
@@ -217,10 +202,10 @@ html,body{
 
   <!-- TITLE -->
   <div class="headline">
-    <span id="typeText"></span><span class="cursor"></span>
+    <span id="typeText"></span><span id="cursor" class="cursor"></span>
   </div>
 
-  <!-- ANNOUNCEMENTS (ABOVE headshot panel, BELOW title) -->
+  <!-- ANNOUNCEMENTS -->
   <div class="announcements" aria-live="polite">
     <div id="announcementText" class="announcement-text"></div>
   </div>
@@ -231,11 +216,7 @@ html,body{
 
     <div class="hero-name">Steven Haworth</div>
     <div class="hero-subtitle">
-      Master’s student in Data Science at UW–Madison focused on clinical and human-centered AI.
-      My work centers on EEG-based machine learning for seizure detection, artifact rejection,
-      and monitoring states of consciousness.<br><br>
-      I design end-to-end ML pipelines emphasizing reliability,
-      interpretability, and clinical usability.
+      Master’s student in Data Science at UW–Madison focused on clinical and human-centered AI. I build EEG-based machine learning systems for seizure detection, artifact rejection, and monitoring states of consciousness, with an emphasis on reliability in real clinical workflows. My work spans end-to-end pipelines—from data curation and model training to evaluation, calibration, and deployment-ready tooling—so results are interpretable, robust, and usable in practice.
     </div>
   </div>
 
@@ -250,16 +231,21 @@ html,body{
 <script>
 /* ----------------------------
    Word-by-word title typing
-   (NO trailing bullet)
+   + hide cursor when done
    ---------------------------- */
 const words = ["Data Science", "Machine Learning", "EEG Research"];
 const titleEl = document.getElementById("typeText");
+const cursorEl = document.getElementById("cursor");
 
 let w = 0;
 let c = 0;
 
 function typeTitle(){
-  if (w >= words.length) return;
+  if (w >= words.length){
+    // done typing: hide cursor after a brief beat
+    setTimeout(() => cursorEl.classList.add("hidden"), 500);
+    return;
+  }
 
   const current = words[w];
   titleEl.textContent += current[c++];
@@ -267,7 +253,6 @@ function typeTitle(){
   if (c < current.length){
     setTimeout(typeTitle, 60);
   } else {
-    // Only add separator if another phrase remains
     if (w < words.length - 1) titleEl.textContent += " • ";
     w++;
     c = 0;
@@ -280,8 +265,8 @@ typeTitle();
    Announcement carousel (fade)
    ---------------------------- */
 const ANNOUNCEMENTS = [
-  "Argus v1.3 model to debut at ACNS 2026.",
   "Research focus: clinically reliable EEG machine learning.",
+  "Argus v1.3 model to debut at ACNS 2026.",
   "Open to collaboration in neuro-AI and clinical ML.",
   "Building ML systems for real-world healthcare impact."
 ];
