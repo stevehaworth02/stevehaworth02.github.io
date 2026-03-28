@@ -24,18 +24,9 @@
     html, body {
       width:100%; min-height:100%;
       font-family:'DM Sans', sans-serif;
-      background:#03060f;
+      background: radial-gradient(ellipse at 20% 20%, #0a1628 0%, #050a14 40%, #03060f 100%);
       color:var(--text);
       overflow-x:hidden;
-    }
-
-    /* ── Video + overlays ── */
-    .video-bg {
-      position:fixed; inset:0;
-      width:100%; height:100%;
-      object-fit:cover; z-index:0;
-      filter:blur(2px) brightness(.38);
-      transform:scale(1.04);
     }
 
     /* Grain texture */
@@ -484,9 +475,6 @@
 </head>
 <body>
 
-<video class="video-bg" autoplay muted loop playsinline>
-  <source src="background.mp4" type="video/mp4">
-</video>
 <div class="grain"></div>
 <div class="bg-vignette"></div>
 
@@ -536,7 +524,7 @@
       <a href="https://www.linkedin.com/in/stevenhaworth02/" target="_blank">
         <span class="nav-icon">↗</span> LinkedIn
       </a>
-      <a href="/cdn-cgi/l/email-protection#ebdbd9dad3989f8e9d8e85ab8c868a8287c5888486">
+      <a href="mailto:0218steven@gmail.com">
         <span class="nav-icon">◌</span> Email
       </a>
       <a href="academics.html">
@@ -587,19 +575,10 @@
       <div class="mono-label">About</div>
       <div class="bio-text">
         <p>
-          I specialize in <strong>EEG-based machine learning</strong> for seizure detection, forecasting, and monitoring states of consciousness in clinical populations. My work spans epilepsy, acute brain injury, coma, sleep disorders, post-cardiac arrest, and stroke patients. I translate complex neural signals into actionable clinical insights that directly impact patient outcomes.
+          An ML practitioner with deep specialization in <strong>EEG-based machine learning</strong>, my work spans seizure detection, consciousness monitoring, and neural signal classification across epilepsy, acute brain injury, coma, sleep disorders, and post-cardiac arrest populations. I build systems designed for clinical deployment, not just benchmarks. Current work includes papers under review on seizure forecasting and sleep monitoring, a presentation accepted at ACNS 2026, and active collaborations with <strong>UW-Madison, Harvard, Yale, and Washington University in St. Louis</strong>.
         </p>
         <p>
-          My research has achieved high performance in seizure detection and artifact rejection, with a focus on building <strong>reliable, deployable systems</strong> rather than purely academic benchmarks. I currently have papers under review on seizure forecasting and sleep monitoring systems.
-        </p>
-        <p>
-          I've collaborated with research teams at <strong>UW-Madison, Harvard, Yale, and Washington University in St. Louis</strong>, applying computer vision to EEG waveforms and spectrograms to identify preictal and epileptiform patterns for real-time forecasting in long-term monitoring patients.
-        </p>
-        <p>
-          While EEG signal processing is my specialty, I bring broad technical skills across the data science stack — optimization, statistical modeling, deep learning architectures, and large-scale data pipelines. I'm drawn to problems at the intersection of <strong>neuroscience, ML, and healthcare</strong>, but equally equipped to tackle diverse challenges across domains.
-        </p>
-        <p>
-          I'm seeking <strong>Summer 2026 internships</strong> and full-time opportunities following my December 2026 graduation, and I'm willing to relocate.
+          My technical range extends well beyond neuro. I work across <strong>CNNs, LSTMs, large language models, computer vision, statistical modeling, mathematical optimization, and the full data lifecycle</strong>, and I apply that range to whatever the problem demands. I treat the full ML lifecycle seriously, including experiment tracking and model versioning with tools like <strong>MLflow</strong>, and careful selection of metrics that reflect the true nature of the problem rather than those that are simply easy to optimize. I am drawn to complex, high-stakes data challenges where rigorous methodology produces tangible impact. Seeking <strong>Summer 2026 internships</strong> and full-time opportunities post-December 2026. Open to relocation.
         </p>
       </div>
 
