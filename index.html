@@ -1,285 +1,722 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<title>Neural By Nature</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8"/>
+  <title>Neural By Nature – Steven Haworth</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/png" href="favicon2.png">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
-<link rel="icon" type="image/png" href="favicon2.png"
-  
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent:       #66ccff;
+      --accent-dim:   rgba(102,204,255,.15);
+      --accent-glow:  rgba(102,204,255,.28);
+      --glass:        rgba(8,12,28,.82);
+      --glass-border: rgba(102,204,255,.16);
+      --text:         #eef3ff;
+      --muted:        rgba(185,205,235,.62);
+      --sidebar-w:    280px;
+    }
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
-html,body{
-  width:100%;height:100%;
-  font-family:'Inter',sans-serif;
-  color:#fff;
-  display:flex;flex-direction:column;align-items:center;
-  background:#050814;
-}
+    html, body {
+      width:100%; min-height:100%;
+      font-family:'DM Sans', sans-serif;
+      background:#03060f;
+      color:var(--text);
+      overflow-x:hidden;
+    }
 
-/* Background */
-.video-bg{
-  position:fixed;top:0;left:0;width:100%;height:100%;
-  object-fit:cover;z-index:0;
-  filter:blur(3px) brightness(0.45);
-  transform:scale(1.05);
-}
+    /* ── Video + overlays ── */
+    .video-bg {
+      position:fixed; inset:0;
+      width:100%; height:100%;
+      object-fit:cover; z-index:0;
+      filter:blur(2px) brightness(.38);
+      transform:scale(1.04);
+    }
 
-.bg-overlay{
-  position:fixed;top:0;left:0;width:100%;height:100%;
-  background:rgba(5,10,20,0.45);
-  z-index:1;
-}
+    /* Grain texture */
+    .grain {
+      position:fixed; inset:0; z-index:1;
+      pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.045'/%3E%3C/svg%3E");
+      background-repeat:repeat;
+      background-size:200px;
+      opacity:.55;
+    }
 
-/* Panels */
-.panel{
-  position:relative;z-index:10;
-  background:rgba(10,15,30,0.88);
-  border:1px solid rgba(102,204,255,.22);
-  border-radius:16px;
-  backdrop-filter:blur(16px);
-  box-shadow:0 20px 60px rgba(0,0,0,.85);
-  width:100%;max-width:900px;
-}
+    .bg-vignette {
+      position:fixed; inset:0; z-index:2; pointer-events:none;
+      background:radial-gradient(ellipse at 50% 0%, transparent 40%, rgba(3,6,15,.75) 100%);
+    }
 
-/* Header */
-.top-header{
-  margin:2rem auto 1.25rem;
-  padding:1.6rem 20px;text-align:center;
-}
+    /* ── Layout shell ── */
+    .shell {
+      position:relative; z-index:10;
+      display:flex;
+      min-height:100vh;
+      max-width:1200px;
+      margin:0 auto;
+      padding:2.5rem 1.5rem;
+      gap:2rem;
+      align-items:flex-start;
+    }
 
-.brand-title{
-  font-size:2.6rem;font-weight:700;font-style:italic;
-  background:linear-gradient(45deg,#66ccff,#fff);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
+    /* ──────────────────────────────────────────
+       LEFT SIDEBAR
+    ────────────────────────────────────────── */
+    .sidebar {
+      width:var(--sidebar-w);
+      flex-shrink:0;
+      position:sticky;
+      top:2.5rem;
+      display:flex;
+      flex-direction:column;
+      gap:1.5rem;
+      animation: fadeInLeft .6s ease both;
+    }
 
-.brand-byline{
-  color:#b9c6d6;margin:8px 0 20px;
-}
+    @keyframes fadeInLeft {
+      from { opacity:0; transform:translateX(-20px); }
+      to   { opacity:1; transform:translateX(0); }
+    }
 
-.top-nav{
-  display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;
-}
+    /* Identity card */
+    .id-card {
+      background:var(--glass);
+      border:1px solid var(--glass-border);
+      border-radius:18px;
+      padding:1.75rem 1.5rem;
+      backdrop-filter:blur(18px);
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
 
-.top-nav a{
-  text-decoration:none;color:#fff;
-  background:rgba(102,204,255,.14);
-  padding:.7rem 1.4rem;
-  border-radius:10px;
-  border:1px solid rgba(102,204,255,.55);
-  font-weight:700;
-}
+    .id-card::before {
+      content:'';
+      position:absolute; top:-40px; left:50%; transform:translateX(-50%);
+      width:180px; height:180px;
+      background:radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      pointer-events:none;
+    }
 
-/* Main */
-.main{
-  padding:2.2rem 2rem;
-  margin-bottom:2rem;
-}
+    /* Headshot */
+    .headshot-wrap {
+      position:relative;
+      width:108px; height:108px;
+      margin:0 auto 1rem;
+    }
 
-/* Word-by-word headline */
-.headline{
-  font-size:2rem;
-  font-weight:800;
-  text-align:center;
-  margin-bottom:1.0rem;
-  line-height:1.3;
-}
+    .headshot-ring {
+      position:absolute; inset:-4px;
+      border-radius:50%;
+      border:1.5px solid var(--accent);
+      opacity:.65;
+      animation:pulse-ring 3s ease-in-out infinite;
+    }
 
-.cursor{
-  display:inline-block;
-  width:2px;height:1.2em;
-  background:#66ccff;
-  margin-left:4px;
-  animation:blink 1s infinite;
-}
-@keyframes blink{50%{opacity:0;}}
+    @keyframes pulse-ring {
+      0%,100% { transform:scale(1);   opacity:.65; }
+      50%      { transform:scale(1.06); opacity:.3; }
+    }
 
-.cursor.hidden{
-  display:none;
-}
+    .headshot {
+      width:108px; height:108px;
+      border-radius:50%;
+      object-fit:cover;
+      display:block;
+      background:linear-gradient(135deg, #0d1a30 0%, #112240 100%);
+      /* blank placeholder silhouette */
+      box-shadow:0 0 0 1px rgba(102,204,255,.2), 0 8px 32px rgba(0,0,0,.6);
+    }
 
-/* Announcement banner */
-.announcements{
-  margin:0.2rem auto 1.4rem;
-  max-width:820px;
-  border:1px solid rgba(102,204,255,.22);
-  border-radius:12px;
-  background:rgba(102,204,255,.08);
-  padding:.9rem 1rem;
-  text-align:center;
-  box-shadow: 0 10px 30px rgba(0,0,0,.35);
-}
+    /* Silhouette SVG for blank headshot */
+    .headshot-placeholder {
+      width:108px; height:108px;
+      border-radius:50%;
+      background:linear-gradient(145deg, #0c1a35 0%, #0e2040 100%);
+      border:1px solid rgba(102,204,255,.18);
+      display:flex; align-items:center; justify-content:center;
+      box-shadow:0 8px 32px rgba(0,0,0,.6);
+      overflow:hidden;
+    }
 
-.announcement-text{
-  font-size:1.02rem;
-  color:#eaf7ff;
-  font-weight:650;
-  line-height:1.35;
-  opacity:1;
-  transform:translateY(0);
-  transition: opacity 420ms ease, transform 420ms ease;
-}
-.announcement-text.fade-out{opacity:0;transform:translateY(4px);}
-.announcement-text.fade-in{opacity:1;transform:translateY(0);}
+    .headshot-placeholder svg {
+      width:70%; height:70%;
+      opacity:.25;
+    }
 
-/* HERO (WRAPPED TEXT) */
-.hero{
-  text-align:left;
-  max-width:820px;
-  margin:0 auto;
-}
+    .sidebar-name {
+      font-family:'Playfair Display', serif;
+      font-size:1.2rem;
+      font-weight:700;
+      letter-spacing:-.01em;
+      line-height:1.25;
+      margin-bottom:.3rem;
+    }
 
-.headshot{
-  width:150px;height:150px;
-  border-radius:50%;
-  object-fit:cover;
-  border:2px solid #66ccff;
-  float:left;
-  margin:0.2rem 1.25rem 0.6rem 0;
-}
+    .sidebar-role {
+      font-family:'IBM Plex Mono', monospace;
+      font-size:.65rem;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+      color:var(--accent);
+      margin-bottom:.6rem;
+    }
 
-.hero::after{content:"";display:block;clear:both;}
+    .sidebar-inst {
+      font-size:.8rem;
+      color:var(--muted);
+      line-height:1.5;
+    }
 
-.hero-name{
-  font-size:1.6rem;
-  font-weight:800;
-  margin-top:0.1rem;
-}
+    /* Divider */
+    .s-divider {
+      width:32px; height:1px;
+      background:var(--glass-border);
+      margin:1rem auto;
+    }
 
-.hero-subtitle{
-  color:#dbe7f5;
-  line-height:1.75;
-  margin-top:0.45rem;
-}
+    /* Status dot */
+    .status-row {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:.45rem;
+      font-size:.72rem;
+      color:var(--muted);
+      font-family:'IBM Plex Mono', monospace;
+    }
 
-/* About */
-.about-text{
-  margin-top:1.4rem;
-  line-height:1.75;
-  color:#e7eef8;
-}
+    .status-dot {
+      width:7px; height:7px;
+      border-radius:50%;
+      background:#4cffaa;
+      box-shadow:0 0 8px rgba(76,255,170,.7);
+      animation:blink-dot 2.4s ease-in-out infinite;
+    }
 
-/* Mobile */
-@media (max-width:650px){
-  .headshot{
-    float:none;
-    display:block;
-    margin:0 auto 1rem auto;
-  }
-  .hero{text-align:center;}
-  .hero-subtitle{text-align:left;}
-}
-</style>
+    @keyframes blink-dot {
+      0%,100% { opacity:1; }
+      50%      { opacity:.3; }
+    }
+
+    /* Nav card */
+    .nav-card {
+      background:var(--glass);
+      border:1px solid var(--glass-border);
+      border-radius:18px;
+      padding:1.25rem 1rem;
+      backdrop-filter:blur(18px);
+      display:flex;
+      flex-direction:column;
+      gap:.45rem;
+    }
+
+    .nav-label {
+      font-family:'IBM Plex Mono', monospace;
+      font-size:.6rem;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:var(--muted);
+      padding:.2rem .5rem .55rem;
+    }
+
+    .nav-card a {
+      text-decoration:none;
+      color:var(--text);
+      font-size:.875rem;
+      font-weight:500;
+      padding:.6rem .85rem;
+      border-radius:10px;
+      border:1px solid transparent;
+      display:flex;
+      align-items:center;
+      gap:.65rem;
+      transition:background .18s, border-color .18s, color .18s;
+    }
+
+    .nav-card a:hover {
+      background:var(--accent-dim);
+      border-color:rgba(102,204,255,.28);
+      color:#fff;
+    }
+
+    .nav-card a .nav-icon {
+      font-size:.9rem;
+      width:18px;
+      text-align:center;
+      opacity:.7;
+    }
+
+    /* ──────────────────────────────────────────
+       MAIN CONTENT
+    ────────────────────────────────────────── */
+    .main {
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      gap:1.5rem;
+      min-width:0;
+    }
+
+    /* Generic glass panel */
+    .panel {
+      background:var(--glass);
+      border:1px solid var(--glass-border);
+      border-radius:18px;
+      backdrop-filter:blur(18px);
+      padding:1.75rem 2rem;
+    }
+
+    /* ── Header panel ── */
+    .header-panel {
+      position:relative;
+      overflow:hidden;
+      padding-bottom:0;
+      animation:fadeUp .5s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(16px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .brand-row {
+      display:flex;
+      align-items:baseline;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:.5rem;
+      margin-bottom:.35rem;
+    }
+
+    .brand-title {
+      font-family:'Playfair Display', serif;
+      font-size:2.1rem;
+      font-style:italic;
+      font-weight:700;
+      background:linear-gradient(90deg, #fff 0%, var(--accent) 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      letter-spacing:-.02em;
+    }
+
+    .brand-byline {
+      font-family:'IBM Plex Mono', monospace;
+      font-size:.68rem;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+
+    /* EEG waveform SVG */
+    .eeg-bar {
+      width:100%;
+      height:38px;
+      margin-top:.75rem;
+      overflow:visible;
+    }
+
+    .eeg-path {
+      fill:none;
+      stroke:var(--accent);
+      stroke-width:1.5;
+      opacity:.45;
+      stroke-dasharray:1200;
+      stroke-dashoffset:1200;
+      animation:drawEEG 2.2s ease forwards .4s;
+    }
+
+    @keyframes drawEEG {
+      to { stroke-dashoffset:0; }
+    }
+
+    /* ── Headline panel ── */
+    .headline-panel {
+      padding:1.5rem 2rem;
+      animation:fadeUp .5s ease both .1s;
+    }
+
+    .mono-label {
+      font-family:'IBM Plex Mono', monospace;
+      font-size:.62rem;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin-bottom:.65rem;
+    }
+
+    .headline {
+      font-family:'Playfair Display', serif;
+      font-size:1.95rem;
+      font-weight:700;
+      line-height:1.25;
+      letter-spacing:-.02em;
+    }
+
+    .cursor {
+      display:inline-block;
+      width:2px; height:1em;
+      background:var(--accent);
+      margin-left:3px;
+      vertical-align:middle;
+      animation:blink 1s step-end infinite;
+    }
+
+    @keyframes blink { 50% { opacity:0; } }
+    .cursor.hidden { display:none; }
+
+    /* ── Announcements ── */
+    .ann-panel {
+      padding:1.1rem 1.75rem;
+      display:flex;
+      align-items:center;
+      gap:1rem;
+      animation:fadeUp .5s ease both .2s;
+      min-height:80px;
+    }
+
+    .ann-indicator {
+      flex-shrink:0;
+      width:3px; height:36px;
+      background:linear-gradient(180deg, var(--accent) 0%, transparent 100%);
+      border-radius:2px;
+    }
+
+    .ann-inner { flex:1; min-width:0; }
+
+    .ann-kicker {
+      font-family:'IBM Plex Mono', monospace;
+      font-size:.6rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--accent);
+      margin-bottom:.2rem;
+    }
+
+    #announcementText {
+      font-size:.9rem;
+      color:var(--text);
+      line-height:1.45;
+      font-weight:400;
+      opacity:1;
+      transform:translateY(0);
+      transition:opacity .38s ease, transform .38s ease;
+    }
+
+    #announcementText.fade-out { opacity:0; transform:translateY(5px); }
+
+    /* ── Bio panel ── */
+    .bio-panel {
+      padding:2rem;
+      animation:fadeUp .5s ease both .3s;
+    }
+
+    .bio-panel .mono-label { margin-bottom:1.1rem; }
+
+    .bio-text {
+      font-size:.935rem;
+      line-height:1.82;
+      color:rgba(220,232,255,.82);
+      font-weight:300;
+    }
+
+    .bio-text p + p { margin-top:1.1rem; }
+
+    .bio-text strong {
+      color:#fff;
+      font-weight:500;
+    }
+
+    /* Collab logos row */
+    .collab-row {
+      margin-top:1.5rem;
+      display:flex;
+      align-items:center;
+      gap:.6rem;
+      flex-wrap:wrap;
+    }
+
+    .collab-label {
+      font-family:'IBM Plex Mono', monospace;
+      font-size:.6rem;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin-right:.2rem;
+    }
+
+    .collab-tag {
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.09);
+      border-radius:8px;
+      padding:.22rem .65rem;
+      font-size:.72rem;
+      color:rgba(200,215,240,.55);
+      font-family:'IBM Plex Mono', monospace;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width:780px) {
+      .shell {
+        flex-direction:column;
+        padding:1.25rem 1rem;
+      }
+      .sidebar {
+        width:100%;
+        position:static;
+        flex-direction:row;
+        flex-wrap:wrap;
+      }
+      .id-card { flex:1; min-width:220px; }
+      .nav-card { flex:1; min-width:220px; flex-direction:row; flex-wrap:wrap; align-items:center; }
+      .nav-label { width:100%; }
+      .brand-title { font-size:1.65rem; }
+      .headline { font-size:1.5rem; }
+    }
+  </style>
 </head>
-
 <body>
 
 <video class="video-bg" autoplay muted loop playsinline>
   <source src="background.mp4" type="video/mp4">
 </video>
-<div class="bg-overlay"></div>
+<div class="grain"></div>
+<div class="bg-vignette"></div>
 
-<!-- HEADER -->
-<div class="panel top-header">
-  <h1 class="brand-title">Neural by Nature</h1>
-  <p class="brand-byline">By Steven Haworth</p>
+<div class="shell">
 
-  <div class="top-nav">
-    <a href="https://github.com/stevehaworth02" target="_blank">GitHub</a>
-    <a href="https://www.linkedin.com/in/stevenhaworth02/" target="_blank">LinkedIn</a>
-    <a href="resume.html">Resume</a>
-    <a href="academics.html">Academics</a>
-    <a href="symposium.html">Symposium</a>
-    <a href="community.html">Engagement</a>
-  </div>
-</div>
+  <!-- ════════════════════════════
+       LEFT SIDEBAR
+  ════════════════════════════ -->
+  <aside class="sidebar">
 
-<!-- MAIN -->
-<div class="panel main">
+    <div class="id-card">
+      <div class="headshot-wrap">
+        <div class="headshot-ring"></div>
+        <!-- Swap this div for <img class="headshot" src="headshot-400.jpg"> when ready -->
+        <div class="headshot-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="8" r="4" fill="#66ccff"/>
+            <path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke="#66ccff" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
 
-  <!-- TITLE -->
-  <div class="headline">
-    <span id="typeText"></span><span id="cursor" class="cursor"></span>
-  </div>
+      <div class="sidebar-name">Steven Haworth</div>
+      <div class="sidebar-role">MS Data Science</div>
+      <div class="sidebar-inst">University of Wisconsin–Madison<br>Expected Dec 2026</div>
 
-  <!-- ANNOUNCEMENTS -->
-  <div class="announcements" aria-live="polite">
-    <div id="announcementText" class="announcement-text"></div>
-  </div>
+      <div class="s-divider"></div>
 
-  <!-- HEADSHOT PANEL -->
-  <div class="hero">
-  <img class="headshot" src="headshot-400.jpg" alt="Steven Haworth headshot">
+      <div class="status-row">
+        <span class="status-dot"></span>
+        <span>Open to opportunities</span>
+      </div>
+    </div>
 
-  <div class="hero-name">Steven Haworth</div>
+    <nav class="nav-card">
+      <div class="nav-label">Navigate</div>
+      <a href="research.html">
+        <span class="nav-icon">◈</span> Research
+      </a>
+      <a href="https://strucklab.wustl.edu/" target="_blank">
+        <span class="nav-icon">⬡</span> Lab
+      </a>
+      <a href="resume.html">
+        <span class="nav-icon">◉</span> Resume
+      </a>
+      <a href="posters.html">
+        <span class="nav-icon">◎</span> Posters
+      </a>
+      <a href="https://github.com/stevehaworth02" target="_blank">
+        <span class="nav-icon">⌥</span> GitHub
+      </a>
+      <a href="https://www.linkedin.com/in/stevenhaworth02/" target="_blank">
+        <span class="nav-icon">↗</span> LinkedIn
+      </a>
+      <a href="/cdn-cgi/l/email-protection#ebdbd9dad3989f8e9d8e85ab8c868a8287c5888486">
+        <span class="nav-icon">◌</span> Email
+      </a>
+      <a href="academics.html">
+        <span class="nav-icon">◈</span> Academics
+      </a>
+      <a href="community.html">
+        <span class="nav-icon">◌</span> Engagement
+      </a>
+    </nav>
 
-  <div class="hero-subtitle">
-  I specialize in EEG-based machine learning for seizure detection, forecasting, and monitoring
-  states of consciousness in clinical populations. My work spans epilepsy, acute brain injury, 
-  coma, sleep disorders, post–cardiac arrest, and stroke patients. I translate complex neural 
-  signals into actionable clinical insights that directly impact patient outcomes.
-  <br><br>
-  My research has achieved high performance in seizure detection and artifact rejection,
-  with focus on building reliable, deployable systems rather than purely academic benchmarks.
-  I currently have papers under review on seizure forecasting and sleep monitoring systems.
-  I've collaborated with research teams at UW-Madison, Harvard, Yale, and Washington
-  University in St. Louis, applying computer vision to EEG waveforms and spectrograms to
-  identify preictal and epileptiform patterns for real-time forecasting in long-term monitoring patients.
-  <br><br>
-  While EEG signal processing is my specialty, I bring broad technical skills across the data
-  science stack including optimization, statistical modeling, deep learning architectures, and
-  large-scale data pipelines. I'm drawn to problems at the intersection of neuroscience,
-  ML, and healthcare, but I'm equally equipped to tackle diverse challenges across domains.
-  <br><br>
-  I'm seeking summer 2026 internships and full-time opportunities following my December 2026
-  graduation, and I'm willing to relocate. I'm looking to apply specialized expertise while 
-  continuing to grow as a versatile data scientist.
-  </div>
+  </aside>
 
+  <!-- ════════════════════════════
+       MAIN CONTENT
+  ════════════════════════════ -->
+  <main class="main">
 
+    <!-- Brand header -->
+    <div class="panel header-panel">
+      <div class="brand-row">
+        <span class="brand-title">Neural by Nature</span>
+        <span class="brand-byline">neuralbynature.dev</span>
+      </div>
+
+      <!-- Continuous EEG canvas -->
+      <canvas id="eegCanvas" style="width:100%;height:42px;display:block;margin-top:.75rem;opacity:.55;"></canvas>
+    </div>
+
+    <!-- Typing headline -->
+    <div class="panel headline-panel">
+      <div class="mono-label">Research Focus</div>
+      <div class="headline">
+        Data Science · Machine Learning
+      </div>
+    </div>
+
+    <!-- Announcements -->
+    <div class="panel ann-panel" aria-live="polite">
+      <div class="ann-indicator"></div>
+      <div class="ann-inner">
+        <div class="ann-kicker">Latest</div>
+        <div id="announcementText"></div>
+      </div>
+    </div>
+
+    <!-- Bio -->
+    <div class="panel bio-panel">
+      <div class="mono-label">About</div>
+      <div class="bio-text">
+        <p>
+          I specialize in <strong>EEG-based machine learning</strong> for seizure detection, forecasting, and monitoring states of consciousness in clinical populations. My work spans epilepsy, acute brain injury, coma, sleep disorders, post-cardiac arrest, and stroke patients. I translate complex neural signals into actionable clinical insights that directly impact patient outcomes.
+        </p>
+        <p>
+          My research has achieved high performance in seizure detection and artifact rejection, with a focus on building <strong>reliable, deployable systems</strong> rather than purely academic benchmarks. I currently have papers under review on seizure forecasting and sleep monitoring systems.
+        </p>
+        <p>
+          I've collaborated with research teams at <strong>UW-Madison, Harvard, Yale, and Washington University in St. Louis</strong>, applying computer vision to EEG waveforms and spectrograms to identify preictal and epileptiform patterns for real-time forecasting in long-term monitoring patients.
+        </p>
+        <p>
+          While EEG signal processing is my specialty, I bring broad technical skills across the data science stack — optimization, statistical modeling, deep learning architectures, and large-scale data pipelines. I'm drawn to problems at the intersection of <strong>neuroscience, ML, and healthcare</strong>, but equally equipped to tackle diverse challenges across domains.
+        </p>
+        <p>
+          I'm seeking <strong>Summer 2026 internships</strong> and full-time opportunities following my December 2026 graduation, and I'm willing to relocate.
+        </p>
+      </div>
+
+      <div class="collab-row">
+        <span class="collab-label">Collaborations</span>
+        <span class="collab-tag">UW–Madison</span>
+        <span class="collab-tag">Harvard</span>
+        <span class="collab-tag">Yale</span>
+        <span class="collab-tag">WashU</span>
+      </div>
+    </div>
+
+  </main>
 </div>
 
 <script>
-/* ----------------------------
-   Word-by-word title typing
-   + hide cursor when done
-   ---------------------------- */
-const words = ["Data Science", "Machine Learning", "EEG Research"];
-const titleEl = document.getElementById("typeText");
-const cursorEl = document.getElementById("cursor");
+/* ── Continuous EEG waveform ── */
+(function() {
+  const canvas = document.getElementById("eegCanvas");
+  const dpr = window.devicePixelRatio || 1;
 
-let w = 0;
-let c = 0;
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    canvas.width  = rect.width  * dpr;
+    canvas.height = rect.height * dpr;
+  }
+  resize();
+  window.addEventListener("resize", resize);
 
-function typeTitle(){
-  if (w >= words.length){
-    // done typing: hide cursor after a brief beat
-    setTimeout(() => cursorEl.classList.add("hidden"), 500);
-    return;
+  const ctx = canvas.getContext("2d");
+
+  // Ring buffer of y-values
+  const HISTORY = 1800;
+  const buf = new Float32Array(HISTORY);
+  let head = 0;
+
+  // EEG signal state
+  let phase      = 0;
+  let noiseVal   = 0;
+  let spikeTimer = 0;
+  let spikePhase = -1; // -1 = no spike
+  let spikeIdx   = 0;
+
+  // Spike waveform shape (normalized -1..1)
+  const SPIKE = [0,.08,.18,.35,.6,1,.55,-.35,-.7,-.45,-.2,-.08,-.02,0,0];
+
+  function nextSample() {
+    // Slow sinusoidal base (alpha-like rhythm ~10Hz feel)
+    phase += 0.045;
+    const base = Math.sin(phase) * 0.18 + Math.sin(phase * 2.3) * 0.07;
+
+    // Pink-ish noise
+    noiseVal = noiseVal * 0.92 + (Math.random() - 0.5) * 0.18;
+
+    // Random spike events
+    spikeTimer--;
+    let spike = 0;
+    if (spikePhase >= 0) {
+      spike = SPIKE[spikeIdx] * 0.78;
+      spikeIdx++;
+      if (spikeIdx >= SPIKE.length) { spikePhase = -1; spikeIdx = 0; }
+    } else if (spikeTimer <= 0) {
+      spikePhase = 0; spikeIdx = 0;
+      spikeTimer = 120 + Math.random() * 220;
+    }
+
+    return base + noiseVal + spike;
   }
 
-  const current = words[w];
-  titleEl.textContent += current[c++];
+  // Pre-fill buffer
+  for (let i = 0; i < HISTORY; i++) { buf[i] = nextSample(); }
 
-  if (c < current.length){
-    setTimeout(typeTitle, 60);
-  } else {
-    if (w < words.length - 1) titleEl.textContent += " • ";
-    w++;
-    c = 0;
-    setTimeout(typeTitle, 500);
+  let lastTime = 0;
+  const SAMPLES_PER_SEC = 60; // scroll speed
+
+  function draw(ts) {
+    requestAnimationFrame(draw);
+
+    const elapsed = ts - lastTime;
+    if (elapsed < 1000 / SAMPLES_PER_SEC) return;
+    lastTime = ts;
+
+    // Push new sample
+    buf[head % HISTORY] = nextSample();
+    head++;
+
+    const W = canvas.width;
+    const H = canvas.height;
+    const mid = H / 2;
+    const amp = H * 0.38;
+
+    ctx.clearRect(0, 0, W, H);
+
+    ctx.beginPath();
+    ctx.strokeStyle = "#66ccff";
+    ctx.lineWidth   = 1.5 * dpr;
+    ctx.lineJoin    = "round";
+
+    for (let i = 0; i < W; i++) {
+      // Map pixel x → history index (oldest left, newest right)
+      const age = W - 1 - i;            // 0 = newest, W-1 = oldest
+      const bufIdx = ((head - 1 - age) % HISTORY + HISTORY) % HISTORY;
+      const y = mid - buf[bufIdx] * amp;
+      i === 0 ? ctx.moveTo(i, y) : ctx.lineTo(i, y);
+    }
+
+    ctx.stroke();
   }
-}
-typeTitle();
 
-/* ----------------------------
-   Announcement carousel (fade)
-   ---------------------------- */
+  requestAnimationFrame(draw);
+})();
+
+/* ── Announcement carousel ── */
 const ANNOUNCEMENTS = [
   "Currently seeking Summer 2026 internships in Data Science & Machine Learning",
   "A putative role of heavy Cannabis use in Temporal Lobe Epilepsy now under peer review",
@@ -290,29 +727,14 @@ const ANNOUNCEMENTS = [
 const annEl = document.getElementById("announcementText");
 let idx = 0;
 
-function setAnnouncement(text){
-  annEl.textContent = text;
-}
+annEl.textContent = ANNOUNCEMENTS[0];
 
-function rotateAnnouncement(){
+setInterval(() => {
   annEl.classList.add("fade-out");
-  annEl.classList.remove("fade-in");
-
   setTimeout(() => {
     idx = (idx + 1) % ANNOUNCEMENTS.length;
-    setAnnouncement(ANNOUNCEMENTS[idx]);
+    annEl.textContent = ANNOUNCEMENTS[idx];
     annEl.classList.remove("fade-out");
-    annEl.classList.add("fade-in");
-  }, 420);
-}
-
-// init
-setAnnouncement(ANNOUNCEMENTS[idx]);
-annEl.classList.add("fade-in");
-
-// rotate every 4s
-setInterval(rotateAnnouncement, 4000);
+  }, 390);
+}, 4000);
 </script>
-
-</body>
-</html>
