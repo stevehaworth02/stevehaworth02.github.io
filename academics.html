@@ -4,48 +4,632 @@
   <meta charset="UTF-8" />
   <title>Academics – Steven Haworth</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    html,body{
-      width:100%;height:100%;
-      font-family:'Inter',sans-serif;
-      background:black;color:white;
-      display:flex;justify-content:center;align-items:center;
-      overflow:hidden
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --glass-bg: rgba(15, 15, 30, 0.72);
+      --glass-border: rgba(255, 255, 255, 0.09);
+      --glass-hover: rgba(20, 20, 45, 0.85);
+      --accent: #66ccff;
+      --accent-dim: rgba(102, 204, 255, 0.18);
+      --accent-glow: rgba(102, 204, 255, 0.35);
+      --text-main: #f0f4ff;
+      --text-muted: rgba(200, 210, 240, 0.65);
+      --tag-bg: rgba(102, 204, 255, 0.12);
     }
-    .video-bg{position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0}
-    .glass{
-      background:rgba(15,15,30,.75);
-      border:1px solid rgba(255,255,255,.1);
-      border-radius:16px;
-      padding:2rem;
-      max-width:800px;width:90%;
-      text-align:center;
-      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-      z-index:1
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: black;
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
     }
-    h1{margin-bottom:1rem;font-size:2rem}
-    p{font-size:1.1rem;line-height:1.6}
-    a.back{display:inline-block;margin-top:1.5rem;color:#66ccff;text-decoration:none}
-    a.back:hover{text-decoration:underline}
+
+    /* ── Video background ── */
+    .video-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      opacity: 0.85;
+    }
+
+    /* ── Subtle dark gradient overlay so cards stay readable ── */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,5,0.35) 0%,
+        rgba(0,0,10,0.15) 40%,
+        rgba(0,0,10,0.15) 60%,
+        rgba(0,0,5,0.50) 100%
+      );
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* ── Page wrapper ── */
+    .page {
+      position: relative;
+      z-index: 2;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    /* ── Hero header ── */
+    .hero {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 2.5rem 2.5rem 2rem;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      margin-bottom: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 220px; height: 220px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 span {
+      color: var(--accent);
+    }
+
+    .hero-meta {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hero p {
+      font-size: 0.98rem;
+      line-height: 1.65;
+      color: var(--text-muted);
+      max-width: 680px;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.25rem;
+    }
+
+    .tag {
+      background: var(--tag-bg);
+      border: 1px solid rgba(102, 204, 255, 0.22);
+      border-radius: 20px;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Section label ── */
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+      padding-left: 0.1rem;
+    }
+
+    /* ── Course grid ── */
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 1.25rem;
+    }
+
+    /* ── Individual course card ── */
+    .card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      overflow: hidden;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(102, 204, 255, 0.28);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(102, 204, 255, 0.08);
+    }
+
+    /* ── Card image area ── */
+    .card-img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      display: block;
+      background: #0a0a18; /* fallback if img missing */
+    }
+
+    /* Placeholder gradient when no real photo yet */
+    .card-img-placeholder {
+      width: 100%;
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.8rem;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .card-img-placeholder::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,10,0.25);
+    }
+
+    .card-img-placeholder .icon {
+      position: relative;
+      z-index: 1;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6));
+    }
+
+    /* ── Card body ── */
+    .card-body {
+      padding: 1.1rem 1.25rem 1.3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      flex: 1;
+    }
+
+    .card-course-id {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.67rem;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+    }
+
+    .card-divider {
+      width: 28px;
+      height: 1px;
+      background: rgba(102, 204, 255, 0.3);
+      margin: 0.1rem 0;
+    }
+
+    .card-desc {
+      font-size: 0.855rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      flex: 1;
+    }
+
+    /* Rating row */
+    .card-footer {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .rating {
+      display: flex;
+      gap: 2px;
+    }
+
+    .rating span {
+      font-size: 0.75rem;
+      color: var(--accent);
+      opacity: 0.35;
+    }
+
+    .rating span.filled {
+      opacity: 1;
+    }
+
+    .card-tag {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 0.18rem 0.55rem;
+      font-size: 0.68rem;
+      color: rgba(200,210,240,0.55);
+    }
+
+    /* ── Back link ── */
+    .back-row {
+      margin-top: 2.5rem;
+      text-align: center;
+    }
+
+    a.back {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.9rem;
+      opacity: 0.75;
+      transition: opacity 0.15s;
+    }
+
+    a.back:hover { opacity: 1; text-decoration: underline; }
+
+    /* ── Fade-in on load ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero { animation: fadeUp 0.5s ease both; }
+
+    .card {
+      animation: fadeUp 0.45s ease both;
+    }
+
+    /* stagger each card */
+    .card:nth-child(1)  { animation-delay: 0.05s; }
+    .card:nth-child(2)  { animation-delay: 0.10s; }
+    .card:nth-child(3)  { animation-delay: 0.15s; }
+    .card:nth-child(4)  { animation-delay: 0.20s; }
+    .card:nth-child(5)  { animation-delay: 0.25s; }
+    .card:nth-child(6)  { animation-delay: 0.30s; }
+    .card:nth-child(7)  { animation-delay: 0.35s; }
+    .card:nth-child(8)  { animation-delay: 0.40s; }
+    .card:nth-child(9)  { animation-delay: 0.45s; }
+    .card:nth-child(10) { animation-delay: 0.50s; }
+    .card:nth-child(11) { animation-delay: 0.55s; }
+    .card:nth-child(12) { animation-delay: 0.60s; }
+    .card:nth-child(13) { animation-delay: 0.65s; }
+    .card:nth-child(14) { animation-delay: 0.70s; }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .hero { padding: 1.75rem 1.25rem 1.5rem; }
+      .hero h1 { font-size: 1.55rem; }
+      .course-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
-  <!-- reuse the star‑field video -->
+
   <video class="video-bg" autoplay muted loop playsinline>
     <source src="background.mp4" type="video/mp4">
   </video>
+  <div class="overlay"></div>
 
-  <div class="glass">
-    <h1>Coming Soon</h1>
-    <p>
-      A list of core computing &amp; theory courses I’ve taken, candid reviews of each, and an honest critique of my own performance.<br>
-      Check back soon!
-    </p>
+  <div class="page">
 
-    <!-- simple link home if you like -->
-    <a class="back" href="index.html">← Back to home</a>
-  </div>
+    <!-- ── Hero ── -->
+    <div class="hero">
+      <div class="hero-top">
+        <h1>Academics <span>/</span> UW–Madison</h1>
+        <span class="hero-meta">MS Data Science · Est. 2024</span>
+      </div>
+      <p>
+        Every course I've taken — what I actually thought of it, where I struggled, what stuck.
+        No sugarcoating. These are candid notes, not a transcript.
+      </p>
+      <div class="hero-tags">
+        <span class="tag">Machine Learning</span>
+        <span class="tag">Database Systems</span>
+        <span class="tag">Statistics</span>
+        <span class="tag">Optimization</span>
+        <span class="tag">Signal Processing</span>
+      </div>
+    </div>
+
+    <!-- ── Course grid ── -->
+    <div class="section-label">Course Reviews</div>
+
+    <div class="course-grid">
+
+      <!-- Card 1 -->
+      <div class="card">
+        <div class="card-img-placeholder" style="background: linear-gradient(135deg, #0d1b3e 0%, #102040 50%, #0a2a1a 100%);">
+          <span class="icon">🗄️</span>
+        </div>
+        <div class="card-body">
+          <span class="card-course-id">CS 564</span>
+          <span class="card-title">Database Management Systems</span>
+          <div class="card-divider"></div>
+          <p class="card-desc">
+            Easily one of the most practically dense courses I've taken. B+ trees, LSM trees, buffer pool policies, external merge sort, and query optimization — the kind of content that makes you realize how much engineering goes into something as "simple" as a SELECT statement. HW2 (AuctionBase) was a grind, but writing the JSON-to-SQLite parser from scratch genuinely clicked everything into place.
+          </p>
+          <div class="card-footer">
+            <div class="rating">
+              <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span>
+            </div>
+            <span class="card-tag">Fall 2025</span>
+            <span class="card-tag">SQL</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card">
+        <div class="card-img-placeholder" style="background: linear-gradient(135deg, #1a0a2e 0%, #2a0a3e 50%, #0d0d30 100%);">
+          <span class="icon">🧠</span>
+        </div>
+        <div class="card-body">
+          <span class="card-course-id">CS 760</span>
+          <span class="card-title">Machine Learning</span>
+          <div class="card-divider"></div>
+          <p class="card-desc">
+            Covered the full sweep: kNN, decision trees, neural networks, PCA, k-means, hierarchical clustering, RNNs, LSTMs, CNNs. Heavy on theory with enough implementation to keep it honest. I found myself rebuilding intuition I thought I already had — the math behind backprop and PCA projections is humbling when you actually derive it. The clustering material hit different after using it in my own EEG work.
+          </p>
+          <div class="card-footer">
+            <div class="rating">
+              <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span>★</span>
+            </div>
+            <span class="card-tag">Spring 2025</span>
+            <span class="card-tag">PyTorch</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card">
+        <div class="card-img-placeholder" style="background: linear-gradient(135deg, #0a1e2e 0%, #081828 50%, #071520 100%);">
+          <span class="icon">📊</span>
+        </div>
+        <div class="card-body">
+          <span class="card-course-id">STAT 710</span>
+          <span class="card-title">Mathematical Statistics</span>
+          <div class="card-divider"></div>
+          <p class="card-desc">
+            Brutal. MLE, MOM, sufficient statistics, GLRT, UMP/UMPU tests, Cramér-Rao bounds, Bayesian estimation, goodness-of-fit — the theory underpinning everything else I do. I won't pretend I didn't struggle with the proof-heavy problem sets. But by the end, hypothesis testing stopped feeling like a black box. If you want to understand why ML works, this is where you have to go.
+          </p>
+          <div class="card-footer">
+            <div class="rating">
+              <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span>★</span>
+            </div>
+            <span class="card-tag">Fall 2025</span>
+            <span class="card-tag">Theory</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="card">
+        <div class="card-img-placeholder" style="background: linear-gradient(135deg, #142800 0%, #1a3300 50%, #0f1f00 100%);">
+          <span class="icon">⚙️</span>
+        </div>
+        <div class="card-body">
+          <span class="card-course-id">CS/ISyE/ECE 524</span>
+          <span class="card-title">Introduction to Optimization</span>
+          <div class="card-divider"></div>
+          <p class="card-desc">
+            Stochastic programming with GAMSPy — multi-stage production planning, job shop scheduling, and SVM formulations as optimization problems. The crossover with ML made this uniquely satisfying. My electrode optimizer (Locus) came directly out of this course and ended up as an open-source contribution to the GAMSpy-examples repo. Worth it for that alone.
+          </p>
+          <div class="card-footer">
+            <div class="rating">
+              <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span>
+            </div>
+            <span class="card-tag">Spring 2025</span>
+            <span class="card-tag">GAMSPy</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="card">
+        <div class="card-img-placeholder" style="background: linear-gradient(135deg, #1e0a0a 0%, #2e0d0d 50%, #180808 100%);">
+          <span class="icon">🌊</span>
+        </div>
+        <div class="card-body">
+          <span class="card-course-id">BME / CS 5XX</span>
+          <span class="card-title">Neural Signal Processing</span>
+          <div class="card-divider"></div>
+          <p class="card-desc">
+            Where the EEG obsession started. Spectral analysis, filtering, feature extraction, montage design — all the fundamentals that fed directly into Argus. The gap between "doing DSP in class" and "doing DSP on real clinical seizure recordings" is significant, but this course gave me the language to bridge it. Recommend heavily for anyone going into BCI or clinical AI.
+          </p>
+          <div class="card-footer">
+            <div class="rating">
+              <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span>
+            </div>
+            <span class="card-tag">Fall 2024</span>
+            <span class="card-tag">MNE · EEG</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="card">
+        <div class="card-img-placeholder" style="background: linear-gradient(135deg, #0e1a2e 0%, #0a1525 50%, #081018 100%);">
+          <span class="icon">📐</span>
+        </div>
+        <div class="card-body">
+          <span class="card-course-id">STAT 611</span>
+          <span class="card-title">Advanced Statistical Models</span>
+          <div class="card-divider"></div>
+          <p class="card-desc">
+            Deep dive into GLMs, mixed-effects models, and hierarchical structures. The transition from fixed-effect thinking to modeling random variation as a first-class citizen was a genuine shift in how I approach any dataset. Variance components and REML estimation were the hardest parts — the matrix algebra is unforgiving — but it pays off the moment you're working with repeated-measures or nested clinical data. Directly applicable to EEG subject-level modeling.
+          </p>
+          <div class="card-footer">
+            <div class="rating">
+              <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span>★</span>
+            </div>
+            <span class="card-tag">Fall 2024</span>
+            <span class="card-tag">GLMs · Mixed Models</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 7 -->
+      <div class="card">
+        <div class="card-img-placeholder" style="background: linear-gradient(135deg, #1a1200 0%, #261a00 50%, #120d00 100%);">
+          <span class="icon">🔬</span>
+        </div>
+        <div class="card-body">
+          <span class="card-course-id">STAT 613</span>
+          <span class="card-title">Advanced Statistical Methods</span>
+          <div class="card-divider"></div>
+          <p class="card-desc">
+            Nonparametric inference, bootstrap and resampling methods, permutation tests, density estimation, and robust statistics. The bootstrap section alone changed how I think about uncertainty quantification — it's deceptively simple and extraordinarily powerful. The contrast with the parametric assumptions hammered home in 710 and 611 made this feel almost liberating. Good course for building statistical intuition that doesn't rely on normality as a crutch.
+          </p>
+          <div class="card-footer">
+            <div class="rating">
+              <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span>★</span>
+            </div>
+            <span class="card-tag">Spring 2025</span>
+            <span class="card-tag">Bootstrap · Nonparametric</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 8 -->
+      <div class="card">
+        <div class="card-img-placeholder" style="background: linear-gradient(135deg, #1a0a2a 0%, #150822 50%, #0d0518 100%);">
+          <span class="icon">🔍</span>
+        </div>
+        <div class="card-body">
+          <span class="card-course-id">STAT 451</span>
+          <span class="card-title">Machine Learning & Pattern Recognition</span>
+          <div class="card-divider"></div>
+          <p class="card-desc">
+            More statistically grounded than the CS machine learning offerings — classifiers treated as probabilistic models rather than black boxes. Bayesian classifiers, discriminant analysis, SVMs, feature selection, and the bias-variance tradeoff formalized properly. Taking this alongside CS 760 created useful friction: the two courses often covered the same algorithm from completely different angles, and reconciling those perspectives was worth more than either course alone.
+          </p>
+          <div class="card-footer">
+            <div class="rating">
+              <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span>
+            </div>
+            <span class="card-tag">Fall 2024</span>
+            <span class="card-tag">SVM · Bayes · Features</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 9 -->
+      <div class="card">
+        <div class="card-img-placeholder" style="background: linear-gradient(135deg, #00141e 0%, #001c2a 50%, #000f18 100%);">
+          <span class="icon">🤖</span>
+        </div>
+        <div class="card-body">
+          <span class="card-course-id">STAT 479</span>
+          <span class="card-title">Generative AI & Markov Models</span>
+          <div class="card-divider"></div>
+          <p class="card-desc">
+            Markov chains, HMMs, and the probabilistic foundations that connect classical sequence modeling to modern generative architectures. Watching VAEs and diffusion models derived from first principles — rather than just handed to you as APIs — was the point of the course. I came in skeptical that a stats department could do this topic justice and left with a much deeper appreciation for the probabilistic framing that most ML engineers skip. The HMM assignments were the highlight.
+          </p>
+          <div class="card-footer">
+            <div class="rating">
+              <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span>
+            </div>
+            <span class="card-tag">Spring 2025</span>
+            <span class="card-tag">HMM · VAE · Diffusion</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 10 -->
+      <div class="card">
+        <div class="card-img-placeholder" style="background: linear-gradient(135deg, #001a10 0%, #002218 50%, #001208 100%);">
+          <span class="icon">⚡</span>
+        </div>
+        <div class="card-body">
+          <span class="card-course-id">COMP SCI 544</span>
+          <span class="card-title">Big Data Systems</span>
+          <div class="card-divider"></div>
+          <p class="card-desc">
+            Hadoop, Spark, distributed storage, and the infrastructure concerns that become unavoidable once your data stops fitting in RAM. The gap between "running ML on a laptop" and "running ML on a cluster" is mostly an engineering problem, and this course demystifies it. HDFS and MapReduce as a foundation before Spark made the abstraction layers click. The moment Spark's lazy evaluation model makes sense is genuinely satisfying — it reframes how you think about computation entirely.
+          </p>
+          <div class="card-footer">
+            <div class="rating">
+              <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span>★</span>
+            </div>
+            <span class="card-tag">Spring 2025</span>
+            <span class="card-tag">Spark · Hadoop · HDFS</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 11 -->
+      <div class="card">
+        <div class="card-img-placeholder" style="background: linear-gradient(135deg, #0a0020 0%, #10002e 50%, #080018 100%);">
+          <span class="icon">🕹️</span>
+        </div>
+        <div class="card-body">
+          <span class="card-course-id">COMP SCI 540</span>
+          <span class="card-title">Introduction to Artificial Intelligence</span>
+          <div class="card-divider"></div>
+          <p class="card-desc">
+            Search algorithms, constraint satisfaction, game trees, Bayesian networks, and the classical AI toolkit that predates the deep learning era. Taking this after already building neural networks was a strange experience — it's humbling to see how much mileage the field got out of A* and alpha-beta pruning before GPUs changed everything. A strong conceptual foundation that makes you appreciate why modern approaches work where classical ones hit walls.
+          </p>
+          <div class="card-footer">
+            <div class="rating">
+              <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span>★</span>
+            </div>
+            <span class="card-tag">Fall 2024</span>
+            <span class="card-tag">Search · CSP · Bayes Nets</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 12 — placeholder for future courses -->
+      <div class="card" style="border-style: dashed; opacity: 0.45; pointer-events: none;">
+        <div class="card-img-placeholder" style="background: #0a0a16;">
+          <span class="icon" style="opacity:0.3;">＋</span>
+        </div>
+        <div class="card-body">
+          <span class="card-course-id" style="opacity:0.4;">Coming Soon</span>
+          <span class="card-title" style="opacity:0.35;">More courses on the way</span>
+          <div class="card-divider"></div>
+          <p class="card-desc" style="opacity:0.3;">
+            Check back as I finish out the MS program through December 2026.
+          </p>
+        </div>
+      </div>
+
+    </div><!-- /course-grid -->
+
+    <div class="back-row">
+      <a class="back" href="index.html">← Back to home</a>
+    </div>
+
+  </div><!-- /page -->
+
 </body>
 </html>
