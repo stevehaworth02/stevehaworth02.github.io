@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Research – Steven Haworth</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/png" href="favicon2.png">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --accent:      #66ccff;
+      --accent-dim:  rgba(102,204,255,.13);
+      --accent-glow: rgba(102,204,255,.25);
+      --glass:       rgba(8,12,28,.82);
+      --glass-border:rgba(102,204,255,.14);
+      --text:        #eef3ff;
+      --muted:       rgba(185,205,235,.58);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    html, body {
+      width:100%; min-height:100%;
+      font-family:'DM Sans', sans-serif;
+      background: radial-gradient(ellipse at 20% 20%, #0a1628 0%, #050a14 40%, #03060f 100%);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+
+    .grain {
+      position:fixed; inset:0; z-index:1; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.045'/%3E%3C/svg%3E");
+      background-repeat:repeat; background-size:200px; opacity:.55;
+    }
+
+    .bg-vignette {
+      position:fixed; inset:0; z-index:2; pointer-events:none;
+      background:radial-gradient(ellipse at 50% 0%, transparent 40%, rgba(3,6,15,.75) 100%);
+    }
+
+    /* ── Page wrapper ── */
+    .page {
+      position:relative; z-index:10;
+      max-width:900px;
+      margin:0 auto;
+      padding:3rem 1.5rem 5rem;
+      display:flex;
+      flex-direction:column;
+      gap:1.5rem;
+    }
+
+    /* ── Generic glass panel ── */
+    .panel {
+      background:var(--glass);
+      border:1px solid var(--glass-border);
+      border-radius:18px;
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      padding:1.75rem 2rem;
+    }
+
+    /* ── Fade-up animation ── */
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(16px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .panel { animation:fadeUp .45s ease both; }
+    .panel:nth-child(1) { animation-delay:.00s; }
+    .panel:nth-child(2) { animation-delay:.07s; }
+    .panel:nth-child(3) { animation-delay:.14s; }
+    .panel:nth-child(4) { animation-delay:.21s; }
+    .panel:nth-child(5) { animation-delay:.28s; }
+
+    /* ── Header ── */
+    .header-panel {
+      position:relative; overflow:hidden;
+    }
+
+    .header-panel::before {
+      content:'';
+      position:absolute; top:-50px; right:-50px;
+      width:200px; height:200px;
+      background:radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      pointer-events:none;
+    }
+
+    .header-top {
+      display:flex;
+      align-items:baseline;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:.5rem;
+      margin-bottom:.3rem;
+    }
+
+    .page-title {
+      font-family:'Playfair Display', serif;
+      font-size:2rem;
+      font-weight:700;
+      font-style:italic;
+      background:linear-gradient(90deg, #fff 0%, var(--accent) 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      letter-spacing:-.02em;
+    }
+
+    .mono-label {
+      font-family:'IBM Plex Mono', monospace;
+      font-size:.62rem;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+
+    .header-sub {
+      font-size:.9rem;
+      color:var(--muted);
+      line-height:1.6;
+      margin-top:.5rem;
+      max-width:620px;
+    }
+
+    /* ── Section header ── */
+    .section-header {
+      display:flex;
+      align-items:center;
+      gap:1rem;
+      margin-bottom:1.5rem;
+    }
+
+    .section-title {
+      font-family:'Playfair Display', serif;
+      font-size:1.25rem;
+      font-weight:700;
+      letter-spacing:-.01em;
+    }
+
+    .section-count {
+      font-family:'IBM Plex Mono', monospace;
+      font-size:.65rem;
+      letter-spacing:.1em;
+      color:var(--accent);
+      background:var(--accent-dim);
+      border:1px solid rgba(102,204,255,.2);
+      border-radius:20px;
+      padding:.18rem .6rem;
+    }
+
+    .section-line {
+      flex:1;
+      height:1px;
+      background:var(--glass-border);
+    }
+
+    /* ── Research card ── */
+    .research-card {
+      border:1px solid var(--glass-border);
+      border-radius:14px;
+      padding:1.4rem 1.6rem;
+      background:rgba(255,255,255,.025);
+      transition:border-color .2s ease, background .2s ease, transform .2s ease;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .research-card:hover {
+      border-color:rgba(102,204,255,.3);
+      background:rgba(102,204,255,.04);
+      transform:translateY(-2px);
+    }
+
+    .research-card + .research-card {
+      margin-top:1rem;
+    }
+
+    /* Status pill */
+    .status-pill {
+      display:inline-flex;
+      align-items:center;
+      gap:.4rem;
+      font-family:'IBM Plex Mono', monospace;
+      font-size:.62rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      padding:.22rem .7rem;
+      border-radius:20px;
+      margin-bottom:.85rem;
+    }
+
+    .status-pill.preprint {
+      background:rgba(255,180,50,.1);
+      border:1px solid rgba(255,180,50,.28);
+      color:#ffb432;
+    }
+
+    .status-pill.published {
+      background:rgba(80,220,130,.1);
+      border:1px solid rgba(80,220,130,.28);
+      color:#50dc82;
+    }
+
+    .status-pill.wip {
+      background:rgba(180,120,255,.1);
+      border:1px solid rgba(180,120,255,.28);
+      color:#b478ff;
+    }
+
+    .status-dot {
+      width:6px; height:6px;
+      border-radius:50%;
+      flex-shrink:0;
+    }
+
+    .preprint  .status-dot { background:#ffb432; box-shadow:0 0 6px rgba(255,180,50,.6); }
+    .published .status-dot { background:#50dc82; box-shadow:0 0 6px rgba(80,220,130,.6); }
+    .wip       .status-dot { background:#b478ff; box-shadow:0 0 6px rgba(180,120,255,.6); animation:blink-dot 2s ease-in-out infinite; }
+
+    @keyframes blink-dot {
+      0%,100% { opacity:1; }
+      50%      { opacity:.3; }
+    }
+
+    .card-title {
+      font-family:'Playfair Display', serif;
+      font-size:1.05rem;
+      font-weight:700;
+      line-height:1.35;
+      letter-spacing:-.01em;
+      margin-bottom:.5rem;
+    }
+
+    .card-authors {
+      font-size:.8rem;
+      color:var(--muted);
+      margin-bottom:.55rem;
+      font-style:italic;
+    }
+
+    .card-authors strong {
+      color:rgba(220,235,255,.8);
+      font-style:normal;
+      font-weight:500;
+    }
+
+    .card-venue {
+      font-family:'IBM Plex Mono', monospace;
+      font-size:.68rem;
+      letter-spacing:.06em;
+      color:var(--accent);
+      margin-bottom:.8rem;
+    }
+
+    .card-abstract {
+      font-size:.855rem;
+      line-height:1.72;
+      color:rgba(200,215,245,.7);
+      font-weight:300;
+    }
+
+    .card-footer {
+      display:flex;
+      align-items:center;
+      gap:.65rem;
+      margin-top:1.1rem;
+      flex-wrap:wrap;
+    }
+
+    .card-tag {
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:8px;
+      padding:.18rem .55rem;
+      font-size:.68rem;
+      color:rgba(200,215,240,.5);
+      font-family:'IBM Plex Mono', monospace;
+    }
+
+    .card-link {
+      margin-left:auto;
+      font-family:'IBM Plex Mono', monospace;
+      font-size:.68rem;
+      letter-spacing:.06em;
+      color:var(--accent);
+      text-decoration:none;
+      opacity:.7;
+      transition:opacity .15s;
+      display:flex;
+      align-items:center;
+      gap:.3rem;
+    }
+
+    .card-link:hover { opacity:1; text-decoration:underline; }
+
+    /* WIP progress bar */
+    .wip-progress {
+      margin-top:1rem;
+    }
+
+    .wip-progress-label {
+      display:flex;
+      justify-content:space-between;
+      font-family:'IBM Plex Mono', monospace;
+      font-size:.62rem;
+      letter-spacing:.07em;
+      color:var(--muted);
+      margin-bottom:.4rem;
+    }
+
+    .progress-track {
+      height:3px;
+      background:rgba(255,255,255,.07);
+      border-radius:2px;
+      overflow:hidden;
+    }
+
+    .progress-fill {
+      height:100%;
+      border-radius:2px;
+      background:linear-gradient(90deg, #b478ff, rgba(180,120,255,.4));
+      animation:grow .9s ease both .5s;
+      transform-origin:left;
+    }
+
+    @keyframes grow {
+      from { width:0 !important; }
+    }
+
+    /* ── Back link ── */
+    .back-row {
+      text-align:center;
+      padding-top:.5rem;
+    }
+
+    a.back {
+      color:var(--accent);
+      text-decoration:none;
+      font-size:.85rem;
+      opacity:.65;
+      transition:opacity .15s;
+      font-family:'IBM Plex Mono', monospace;
+      letter-spacing:.04em;
+    }
+
+    a.back:hover { opacity:1; text-decoration:underline; }
+
+    @media (max-width:600px) {
+      .page { padding:1.5rem 1rem 3rem; }
+      .page-title { font-size:1.6rem; }
+      .panel { padding:1.4rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grain"></div>
+<div class="bg-vignette"></div>
+
+<div class="page">
+
+  <!-- ── Header ── -->
+  <div class="panel header-panel">
+    <div class="header-top">
+      <span class="page-title">Research</span>
+      <span class="mono-label">Steven Haworth / neuralbynature.dev</span>
+    </div>
+    <p class="header-sub">
+      My work focuses on EEG-based machine learning for clinical applications. Below are preprints currently under review, published work, and active projects without a manuscript yet.
+    </p>
+  </div>
+
+  <!-- ── Preprints ── -->
+  <div class="panel">
+    <div class="section-header">
+      <span class="section-title">Preprints</span>
+      <span class="section-count">2 under review</span>
+      <div class="section-line"></div>
+    </div>
+
+    <!-- Preprint 1 -->
+    <div class="research-card">
+      <div class="status-pill preprint">
+        <span class="status-dot"></span>Under Review
+      </div>
+      <div class="card-title">A Putative Role of Heavy Cannabis Use in Temporal Lobe Epilepsy: An EEG-Based Machine Learning Analysis</div>
+      <div class="card-authors"><strong>Steven Haworth</strong>, Cameron Brace, et al.</div>
+      <div class="card-venue">Under review — journal TBD</div>
+      <div class="card-abstract">
+        Investigates the relationship between chronic cannabis use and temporal lobe epilepsy using EEG-derived machine learning features. Spectral and connectivity biomarkers extracted from HD-EEG recordings are used to characterize network-level differences in affected populations, with classification performance evaluated across seizure onset zones.
+      </div>
+      <div class="card-footer">
+        <span class="card-tag">EEG</span>
+        <span class="card-tag">Epilepsy</span>
+        <span class="card-tag">Spectral Analysis</span>
+        <span class="card-tag">HD-EEG</span>
+      </div>
+    </div>
+
+    <!-- Preprint 2 -->
+    <div class="research-card">
+      <div class="status-pill preprint">
+        <span class="status-dot"></span>Under Review
+      </div>
+      <div class="card-title">Argus: A CNN-LSTM Architecture for Real-Time Seizure Detection in Long-Term EEG Monitoring</div>
+      <div class="card-authors"><strong>Steven Haworth</strong>, et al.</div>
+      <div class="card-venue">Under review — ACNS Annual Meeting 2026 (accepted)</div>
+      <div class="card-abstract">
+        Presents Argus, a multi-scale convolutional and bidirectional LSTM network with an attention mechanism for automated seizure detection. Trained and evaluated on the Temple University Seizure Corpus (TUSZ v1.5.2) using a 22-channel TCP bipolar montage at 200 Hz, achieving 98.06% ROC-AUC. The architecture is designed with clinical deployment in mind, prioritizing low false positive rates in continuous long-term monitoring settings.
+      </div>
+      <div class="card-footer">
+        <span class="card-tag">CNN-LSTM</span>
+        <span class="card-tag">Seizure Detection</span>
+        <span class="card-tag">TUSZ</span>
+        <span class="card-tag">Attention</span>
+        <span class="card-link" href="#">Preprint ↗</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Publications ── -->
+  <div class="panel">
+    <div class="section-header">
+      <span class="section-title">Publications</span>
+      <span class="section-count">placeholder</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="research-card">
+      <div class="status-pill published">
+        <span class="status-dot"></span>Published
+      </div>
+      <div class="card-title">Publication Title Placeholder</div>
+      <div class="card-authors"><strong>Steven Haworth</strong>, Co-Author, Co-Author</div>
+      <div class="card-venue">Journal Name · Vol. X, Issue Y · 2025</div>
+      <div class="card-abstract">
+        Abstract placeholder. Replace with your actual publication details, including the key findings, methodology, and clinical significance of the work.
+      </div>
+      <div class="card-footer">
+        <span class="card-tag">Tag</span>
+        <span class="card-tag">Tag</span>
+        <span class="card-link" href="#">DOI ↗</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Work in Progress ── -->
+  <div class="panel">
+    <div class="section-header">
+      <span class="section-title">Work in Progress</span>
+      <span class="section-count">active</span>
+      <div class="section-line"></div>
+    </div>
+
+    <!-- WIP 1 -->
+    <div class="research-card">
+      <div class="status-pill wip">
+        <span class="status-dot"></span>In Progress
+      </div>
+      <div class="card-title">Seizure Forecasting in Long-Term Monitoring Patients Using Preictal EEG Biomarkers</div>
+      <div class="card-authors"><strong>Steven Haworth</strong>, collaborators at UW-Madison and WashU</div>
+      <div class="card-abstract">
+        Ongoing work developing a forecasting pipeline to predict seizure onset windows in long-term EEG monitoring patients. Focuses on identifying stable preictal biomarkers from spectral and connectivity features, with the goal of producing clinically actionable warning horizons. No manuscript in preparation at this stage.
+      </div>
+      <div class="card-footer">
+        <span class="card-tag">Forecasting</span>
+        <span class="card-tag">Preictal</span>
+        <span class="card-tag">LTM</span>
+        <span class="card-tag">Biomarkers</span>
+      </div>
+      <div class="wip-progress">
+        <div class="wip-progress-label">
+          <span>Progress</span>
+          <span>~55%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" style="width:55%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WIP 2 -->
+    <div class="research-card">
+      <div class="status-pill wip">
+        <span class="status-dot"></span>In Progress
+      </div>
+      <div class="card-title">Sleep Stage Classification and Consciousness Monitoring in Acute Brain Injury Populations</div>
+      <div class="card-authors"><strong>Steven Haworth</strong>, collaborators at Harvard and Beth Israel Medical Center</div>
+      <div class="card-abstract">
+        Active development of a sleep staging and consciousness monitoring system targeting coma, post-cardiac arrest, and stroke patients in ICU settings. Leverages EEG spectral features and deep learning classifiers to track arousal state transitions in populations where standard behavioral assessments are unreliable. No manuscript in preparation at this stage.
+      </div>
+      <div class="card-footer">
+        <span class="card-tag">Sleep Staging</span>
+        <span class="card-tag">Consciousness</span>
+        <span class="card-tag">ICU</span>
+        <span class="card-tag">Acute Brain Injury</span>
+      </div>
+      <div class="wip-progress">
+        <div class="wip-progress-label">
+          <span>Progress</span>
+          <span>~40%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" style="width:40%"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="back-row">
+    <a class="back" href="index.html">← Back to home</a>
+  </div>
+
+</div>
+</body>
+</html>
