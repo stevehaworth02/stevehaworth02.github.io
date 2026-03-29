@@ -524,7 +524,7 @@
       <a href="https://www.linkedin.com/in/stevenhaworth02/" target="_blank">
         <span class="nav-icon">↗</span> LinkedIn
       </a>
-      <a href="/cdn-cgi/l/email-protection#6b5b595a53181f0e1d0e052b0c060a020745080406">
+      <a href="mailto:0218steven@gmail.com">
         <span class="nav-icon">◌</span> Email
       </a>
       <a href="academics.html">
@@ -557,8 +557,7 @@
     <div class="panel headline-panel">
       <div class="mono-label">Research Focus</div>
       <div class="headline">
-        Data Science · Machine Learning · Neurology
-      </div>
+        Data Science · Machine Learning · Signal Processing
     </div>
 
     <!-- Announcements -->
@@ -575,12 +574,10 @@
       <div class="mono-label">About</div>
       <div class="bio-text">
         <p>
-          An ML practitioner with deep specialization in <strong>EEG-based machine learning</strong>, my work spans seizure detection, consciousness monitoring, and neural signal classification across epilepsy, acute brain injury, coma, sleep disorders, and post-cardiac arrest populations. I build systems designed for clinical deployment, not just benchmarks. Current work includes papers under review on seizure forecasting and sleep monitoring, a presentation accepted at ACNS 2026, and active collaborations with <strong>UW-Madison, Harvard, Beth Israel Medical Center, and Washington University in St. Louis</strong>.
+          An ML practitioner with deep specialization in <strong>EEG-based machine learning</strong>, my work spans seizure detection, consciousness monitoring, and neural signal classification across epilepsy, acute brain injury, coma, sleep disorders, and post-cardiac arrest populations. I build systems designed for clinical deployment, not just benchmarks. Current work includes papers under review on seizure forecasting and sleep monitoring, a presentation accepted at ACNS 2026, and active collaborations with <strong>UW-Madison, Harvard, Yale, and Washington University in St. Louis</strong>.
         </p>
         <p>
           My technical range extends well beyond neuro. I work across <strong>CNNs, LSTMs, large language models, computer vision, statistical modeling, mathematical optimization, and the full data lifecycle</strong>, and I apply that range to whatever the problem demands. I treat the full ML lifecycle seriously, including experiment tracking and model versioning with tools like <strong>MLflow</strong>, and careful selection of metrics that reflect the true nature of the problem rather than those that are simply easy to optimize. I am drawn to complex, high-stakes data challenges where rigorous methodology produces tangible impact.
-        </p>
-        <p>
           Seeking <strong>Summer 2026 internships</strong> and full-time opportunities post-December 2026. Open to relocation.
         </p>
       </div>
@@ -597,7 +594,7 @@
   </main>
 </div>
 
-<script data-cfasync="false">
+<script>
 /* ── Continuous EEG waveform ── */
 (function() {
   const canvas = document.getElementById("eegCanvas");
@@ -710,4 +707,9 @@ annEl.textContent = ANNOUNCEMENTS[0];
 setInterval(() => {
   annEl.classList.add("fade-out");
   setTimeout(() => {
-    idx
+    idx = (idx + 1) % ANNOUNCEMENTS.length;
+    annEl.textContent = ANNOUNCEMENTS[idx];
+    annEl.classList.remove("fade-out");
+  }, 390);
+}, 4000);
+</script>
