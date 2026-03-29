@@ -1,87 +1,517 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Symposium | Steven Haworth</title>
+  <meta charset="UTF-8"/>
+  <title>Posters – Steven Haworth</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/png" href="favicon2.png">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 2em;
-      background-color: #f9f9f9;
-      color: #1a1a1a;
+    :root {
+      --accent:      #66ccff;
+      --accent-dim:  rgba(102,204,255,.13);
+      --accent-glow: rgba(102,204,255,.25);
+      --glass:       rgba(8,12,28,.82);
+      --glass-border:rgba(102,204,255,.14);
+      --text:        #eef3ff;
+      --muted:       rgba(185,205,235,.58);
     }
 
-    .nav {
-      margin-bottom: 2em;
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    html, body {
+      width:100%; min-height:100%;
+      font-family:'DM Sans', sans-serif;
+      background:radial-gradient(ellipse at 20% 20%, #0a1628 0%, #050a14 40%, #03060f 100%);
+      color:var(--text);
+      overflow-x:hidden;
     }
 
-    .nav a {
-      text-decoration: none;
-      color: #3366cc;
-      font-weight: bold;
+    .grain {
+      position:fixed; inset:0; z-index:1; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.045'/%3E%3C/svg%3E");
+      background-repeat:repeat; background-size:200px; opacity:.55;
     }
 
-    h1 {
-      font-size: 2em;
-      margin-bottom: 0.5em;
+    .bg-vignette {
+      position:fixed; inset:0; z-index:2; pointer-events:none;
+      background:radial-gradient(ellipse at 50% 0%, transparent 40%, rgba(3,6,15,.75) 100%);
     }
 
-    h2 {
-      margin-top: 2em;
-      color: #333;
+    .page {
+      position:relative; z-index:10;
+      max-width:960px;
+      margin:0 auto;
+      padding:3rem 1.5rem 5rem;
+      display:flex;
+      flex-direction:column;
+      gap:1.5rem;
     }
 
-    .poster {
-      margin-top: 1em;
-      text-align: center;
+    /* ── Glass panel ── */
+    .panel {
+      background:var(--glass);
+      border:1px solid var(--glass-border);
+      border-radius:18px;
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      padding:1.75rem 2rem;
     }
 
-    .poster img {
-      max-width: 100%;
-      height: auto;
-      border: 2px solid #ccc;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(16px); }
+      to   { opacity:1; transform:translateY(0); }
     }
 
-    .caption {
-      font-size: 0.95rem;
-      color: #666;
-      margin-top: 0.5rem;
-      text-align: center;
+    .panel { animation:fadeUp .45s ease both; }
+    .panel:nth-child(1) { animation-delay:.00s; }
+    .panel:nth-child(2) { animation-delay:.08s; }
+    .panel:nth-child(3) { animation-delay:.16s; }
+    .panel:nth-child(4) { animation-delay:.24s; }
+
+    /* ── Header ── */
+    .header-panel {
+      position:relative; overflow:hidden;
     }
 
-    ul {
-      padding-left: 1.2rem;
+    .header-panel::before {
+      content:'';
+      position:absolute; top:-50px; right:-50px;
+      width:200px; height:200px;
+      background:radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      pointer-events:none;
     }
 
-    li {
-      margin-bottom: 0.5rem;
+    .header-top {
+      display:flex;
+      align-items:baseline;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:.5rem;
+      margin-bottom:.3rem;
+    }
+
+    .page-title {
+      font-family:'Playfair Display', serif;
+      font-size:2rem;
+      font-weight:700;
+      font-style:italic;
+      background:linear-gradient(90deg, #fff 0%, var(--accent) 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      letter-spacing:-.02em;
+    }
+
+    .mono-label {
+      font-family:'IBM Plex Mono', monospace;
+      font-size:.62rem;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+
+    .header-sub {
+      font-size:.9rem;
+      color:var(--muted);
+      line-height:1.6;
+      margin-top:.5rem;
+      max-width:620px;
+    }
+
+    /* ── Section header ── */
+    .section-header {
+      display:flex;
+      align-items:center;
+      gap:1rem;
+      margin-bottom:1.5rem;
+    }
+
+    .section-title {
+      font-family:'Playfair Display', serif;
+      font-size:1.25rem;
+      font-weight:700;
+      letter-spacing:-.01em;
+      white-space:nowrap;
+    }
+
+    .section-line {
+      flex:1; height:1px;
+      background:var(--glass-border);
+    }
+
+    /* ── Poster card ── */
+    .poster-card {
+      border:1px solid var(--glass-border);
+      border-radius:14px;
+      overflow:hidden;
+      background:rgba(255,255,255,.02);
+      transition:border-color .2s ease, transform .2s ease;
+    }
+
+    .poster-card:hover {
+      border-color:rgba(102,204,255,.3);
+      transform:translateY(-2px);
+    }
+
+    .poster-card + .poster-card {
+      margin-top:1.25rem;
+    }
+
+    /* Poster image — clickable lightbox */
+    .poster-img-wrap {
+      position:relative;
+      cursor:zoom-in;
+      overflow:hidden;
+      background:#050a14;
+    }
+
+    .poster-img-wrap img {
+      width:100%;
+      display:block;
+      max-height:520px;
+      object-fit:contain;
+      transition:transform .3s ease;
+      padding:1rem;
+    }
+
+    .poster-img-wrap:hover img {
+      transform:scale(1.01);
+    }
+
+    .zoom-hint {
+      position:absolute;
+      bottom:.75rem; right:.75rem;
+      font-family:'IBM Plex Mono', monospace;
+      font-size:.6rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      background:rgba(8,12,28,.82);
+      border:1px solid var(--glass-border);
+      border-radius:6px;
+      padding:.25rem .55rem;
+      color:var(--muted);
+      pointer-events:none;
+      opacity:0;
+      transition:opacity .2s ease;
+    }
+
+    .poster-img-wrap:hover .zoom-hint { opacity:1; }
+
+    /* Poster metadata */
+    .poster-meta {
+      padding:1.25rem 1.5rem 1.4rem;
+    }
+
+    .poster-event-row {
+      display:flex;
+      align-items:center;
+      gap:.65rem;
+      margin-bottom:.6rem;
+      flex-wrap:wrap;
+    }
+
+    .event-badge {
+      font-family:'IBM Plex Mono', monospace;
+      font-size:.62rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      background:var(--accent-dim);
+      border:1px solid rgba(102,204,255,.22);
+      border-radius:20px;
+      padding:.2rem .65rem;
+      color:var(--accent);
+    }
+
+    .event-date {
+      font-family:'IBM Plex Mono', monospace;
+      font-size:.62rem;
+      letter-spacing:.06em;
+      color:var(--muted);
+    }
+
+    .poster-title {
+      font-family:'Playfair Display', serif;
+      font-size:1.05rem;
+      font-weight:700;
+      line-height:1.35;
+      letter-spacing:-.01em;
+      margin-bottom:.45rem;
+    }
+
+    .poster-authors {
+      font-size:.8rem;
+      color:var(--muted);
+      font-style:italic;
+      margin-bottom:.7rem;
+    }
+
+    .poster-authors strong {
+      color:rgba(220,235,255,.8);
+      font-style:normal;
+      font-weight:500;
+    }
+
+    .poster-desc {
+      font-size:.855rem;
+      line-height:1.72;
+      color:rgba(200,215,245,.7);
+      font-weight:300;
+    }
+
+    .poster-tags {
+      display:flex;
+      flex-wrap:wrap;
+      gap:.5rem;
+      margin-top:1rem;
+    }
+
+    .card-tag {
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:8px;
+      padding:.18rem .55rem;
+      font-size:.68rem;
+      color:rgba(200,215,240,.5);
+      font-family:'IBM Plex Mono', monospace;
+    }
+
+    /* ── References ── */
+    .ref-list {
+      display:flex;
+      flex-direction:column;
+      gap:.85rem;
+      margin-top:.25rem;
+    }
+
+    .ref-item {
+      display:flex;
+      gap:1rem;
+      align-items:flex-start;
+    }
+
+    .ref-num {
+      font-family:'IBM Plex Mono', monospace;
+      font-size:.65rem;
+      color:var(--accent);
+      letter-spacing:.06em;
+      flex-shrink:0;
+      margin-top:.12rem;
+      width:24px;
+    }
+
+    .ref-text {
+      font-size:.83rem;
+      line-height:1.65;
+      color:rgba(200,215,245,.65);
+      font-weight:300;
+    }
+
+    .ref-text em { font-style:italic; }
+
+    .ref-text a {
+      color:var(--accent);
+      opacity:.65;
+      font-family:'IBM Plex Mono', monospace;
+      font-size:.72rem;
+      text-decoration:none;
+      word-break:break-all;
+    }
+
+    .ref-text a:hover { opacity:1; text-decoration:underline; }
+
+    /* ── Lightbox ── */
+    .lightbox {
+      display:none;
+      position:fixed; inset:0; z-index:1000;
+      background:rgba(3,6,15,.92);
+      backdrop-filter:blur(8px);
+      align-items:center;
+      justify-content:center;
+      cursor:zoom-out;
+    }
+
+    .lightbox.open { display:flex; }
+
+    .lightbox img {
+      max-width:92vw;
+      max-height:92vh;
+      object-fit:contain;
+      border-radius:12px;
+      border:1px solid var(--glass-border);
+      box-shadow:0 32px 80px rgba(0,0,0,.8);
+    }
+
+    .lightbox-close {
+      position:absolute;
+      top:1.25rem; right:1.5rem;
+      font-family:'IBM Plex Mono', monospace;
+      font-size:.75rem;
+      letter-spacing:.1em;
+      color:var(--muted);
+      cursor:pointer;
+      text-transform:uppercase;
+    }
+
+    .lightbox-close:hover { color:var(--text); }
+
+    /* ── Back link ── */
+    .back-row {
+      text-align:center;
+      padding-top:.5rem;
+    }
+
+    a.back {
+      color:var(--accent);
+      text-decoration:none;
+      font-size:.85rem;
+      opacity:.65;
+      transition:opacity .15s;
+      font-family:'IBM Plex Mono', monospace;
+      letter-spacing:.04em;
+    }
+
+    a.back:hover { opacity:1; text-decoration:underline; }
+
+    @media (max-width:600px) {
+      .page { padding:1.5rem 1rem 3rem; }
+      .page-title { font-size:1.6rem; }
+      .panel { padding:1.4rem 1.25rem; }
     }
   </style>
 </head>
 <body>
 
-  <div class="nav">
-    <a href="index.html">← Back to Home</a>
+<div class="grain"></div>
+<div class="bg-vignette"></div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close">ESC to close</span>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<div class="page">
+
+  <!-- Header -->
+  <div class="panel header-panel">
+    <div class="header-top">
+      <span class="page-title">Posters</span>
+      <span class="mono-label">Steven Haworth / neuralbynature.dev</span>
+    </div>
+    <p class="header-sub">
+      Symposium and conference posters from ongoing and completed research. Click any poster to view full size.
+    </p>
   </div>
 
-  <h1>Symposium Showcase</h1>
+  <!-- Posters -->
+  <div class="panel">
+    <div class="section-header">
+      <span class="section-title">Symposium Posters</span>
+      <div class="section-line"></div>
+    </div>
 
-  <h2>🎨 Poster</h2>
-  <div class="poster">
-    <img src="symposium/poster.jpg" alt="Steven's Symposium Poster">
-    <p class="caption">Poster from the 2025 UW-Madison Symposium</p>
+    <!-- Poster 1 -->
+    <div class="poster-card">
+      <div class="poster-img-wrap" onclick="openLightbox('symposium/poster.jpg')">
+        <img src="symposium/poster.jpg" alt="2025 UW-Madison Symposium Poster">
+        <span class="zoom-hint">Click to expand</span>
+      </div>
+      <div class="poster-meta">
+        <div class="poster-event-row">
+          <span class="event-badge">UW-Madison Symposium</span>
+          <span class="event-date">2025</span>
+        </div>
+        <div class="poster-title">Conscious Experience Classification Using Topological EEG Features in Healthy Populations</div>
+        <div class="poster-authors"><strong>Steven E. Haworth</strong>, et al.</div>
+        <div class="poster-desc">
+          Investigates electrophysiologic and network-level features distinguishing conscious experience from no conscious experience during NREM sleep using HD-EEG and machine learning classification. Presents spectral, connectivity, and graph-theoretic biomarkers screened across 699 awakenings in a serial-awakening paradigm.
+        </div>
+        <div class="poster-tags">
+          <span class="card-tag">HD-EEG</span>
+          <span class="card-tag">Consciousness</span>
+          <span class="card-tag">NREM Sleep</span>
+          <span class="card-tag">Graph Theory</span>
+          <span class="card-tag">ML Classification</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="height:1.5rem"></div>
+
+    <div class="section-header">
+      <span class="section-title">References</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="ref-list">
+
+      <div class="ref-item">
+        <span class="ref-num">[1]</span>
+        <span class="ref-text">
+          Tononi, G., Boly, M., &amp; Cirelli, C. (2024). Consciousness and sleep. <em>Neuron, 112</em>(10), 1568–1594.
+          <a href="https://doi.org/10.1016/j.neuron.2024.04.011" target="_blank">doi.org/10.1016/j.neuron.2024.04.011</a>
+        </span>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[2]</span>
+        <span class="ref-text">
+          Siclari, F., Baird, B., Perogamvros, L., Bernardi, G., LaRocque, J. J., Riedner, B., Boly, M., Postle, B. R., &amp; Tononi, G. (2017). The neural correlates of dreaming. <em>Nature Neuroscience, 20</em>(6), 872–878.
+          <a href="https://doi.org/10.1038/nn.4545" target="_blank">doi.org/10.1038/nn.4545</a>
+        </span>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[3]</span>
+        <span class="ref-text">
+          Nir, Y., &amp; Tononi, G. (2010). Dreaming and the brain: From phenomenology to neurophysiology. <em>Trends in Cognitive Sciences, 14</em>(2), 88–100.
+          <a href="https://doi.org/10.1016/j.tics.2009.12.001" target="_blank">doi.org/10.1016/j.tics.2009.12.001</a>
+        </span>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[4]</span>
+        <span class="ref-text">
+          Siclari, F., LaRocque, J. J., Postle, B. R., &amp; Tononi, G. (2013). Assessing sleep consciousness within subjects using a serial awakening paradigm. <em>Frontiers in Psychology, 4</em>, 542.
+          <a href="https://doi.org/10.3389/fpsyg.2013.00542" target="_blank">doi.org/10.3389/fpsyg.2013.00542</a>
+        </span>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[5]</span>
+        <span class="ref-text">
+          Sporns, O. (2018). Graph theory methods: Applications in brain networks. <em>Dialogues in Clinical Neuroscience, 20</em>(2), 111–121.
+          <a href="https://doi.org/10.31887/DCNS.2018.20.2/osporns" target="_blank">doi.org/10.31887/DCNS.2018.20.2/osporns</a>
+        </span>
+      </div>
+
+    </div>
+
   </div>
 
-  <h2>📚 References</h2>
-  <ul>
-    <li>Tononi, G., Boly, M., & Cirelli, C. (2024). Consciousness and sleep. <em>Neuron, 112</em>(10), 1568–1594. https://doi.org/10.1016/j.neuron.2024.04.011</li>
-    <li>Siclari, F., Baird, B., Perogamvros, L., Bernardi, G., LaRocque, J. J., Riedner, B., Boly, M., Postle, B. R., & Tononi, G. (2017). The neural correlates of dreaming. <em>Nature Neuroscience, 20</em>(6), 872–878. https://doi.org/10.1038/nn.4545</li>
-    <li>Nir, Y., & Tononi, G. (2010). Dreaming and the brain: From phenomenology to neurophysiology. <em>Trends in Cognitive Sciences, 14</em>(2), 88–100. https://doi.org/10.1016/j.tics.2009.12.001</li>
-    <li>Siclari, F., LaRocque, J. J., Postle, B. R., & Tononi, G. (2013). Assessing sleep consciousness within subjects using a serial awakening paradigm. <em>Frontiers in Psychology, 4</em>, 542. https://doi.org/10.3389/fpsyg.2013.00542</li>
-    <li>Sporns, O. (2018). Graph theory methods: Applications in brain networks. <em>Dialogues in Clinical Neuroscience, 20</em>(2), 111–121. https://doi.org/10.31887/DCNS.2018.20.2/osporns</li>
-  </ul>
+  <div class="back-row">
+    <a class="back" href="index.html">← Back to home</a>
+  </div>
+
+</div>
+
+<script>
+  function openLightbox(src) {
+    document.getElementById("lightboxImg").src = src;
+    document.getElementById("lightbox").classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeLightbox() {
+    document.getElementById("lightbox").classList.remove("open");
+    document.body.style.overflow = "";
+  }
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closeLightbox();
+  });
+</script>
 
 </body>
 </html>
