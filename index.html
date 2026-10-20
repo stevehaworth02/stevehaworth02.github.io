@@ -1,719 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <title>Neural By Nature – Steven Haworth</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="icon" type="image/png" href="favicon2 (1).png">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --accent:       #66ccff;
-      --accent-dim:   rgba(102,204,255,.15);
-      --accent-glow:  rgba(102,204,255,.28);
-      --glass:        rgba(8,12,28,.82);
-      --glass-border: rgba(102,204,255,.16);
-      --text:         #eef3ff;
-      --muted:        rgba(185,205,235,.62);
-      --sidebar-w:    280px;
-    }
-
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
-    html, body {
-      width:100%; min-height:100%;
-      font-family:'DM Sans', sans-serif;
-      background: radial-gradient(ellipse at 20% 20%, #0a1628 0%, #050a14 40%, #03060f 100%);
-      color:var(--text);
-      overflow-x:hidden;
-    }
-
-    /* Grain texture */
-    .grain {
-      position:fixed; inset:0; z-index:1;
-      pointer-events:none;
-      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.045'/%3E%3C/svg%3E");
-      background-repeat:repeat;
-      background-size:200px;
-      opacity:.55;
-    }
-
-    .bg-vignette {
-      position:fixed; inset:0; z-index:2; pointer-events:none;
-      background:radial-gradient(ellipse at 50% 0%, transparent 40%, rgba(3,6,15,.75) 100%);
-    }
-
-    /* ── Layout shell ── */
-    .shell {
-      position:relative; z-index:10;
-      display:flex;
-      min-height:100vh;
-      max-width:1200px;
-      margin:0 auto;
-      padding:2.5rem 1.5rem;
-      gap:2rem;
-      align-items:flex-start;
-    }
-
-    /* ──────────────────────────────────────────
-       LEFT SIDEBAR
-    ────────────────────────────────────────── */
-    .sidebar {
-      width:var(--sidebar-w);
-      flex-shrink:0;
-      position:sticky;
-      top:2.5rem;
-      display:flex;
-      flex-direction:column;
-      gap:1.5rem;
-      animation: fadeInLeft .6s ease both;
-    }
-
-    @keyframes fadeInLeft {
-      from { opacity:0; transform:translateX(-20px); }
-      to   { opacity:1; transform:translateX(0); }
-    }
-
-    /* Identity card */
-    .id-card {
-      background:var(--glass);
-      border:1px solid var(--glass-border);
-      border-radius:18px;
-      padding:1.75rem 1.5rem;
-      backdrop-filter:blur(18px);
-      text-align:center;
-      position:relative;
-      overflow:hidden;
-    }
-
-    .id-card::before {
-      content:'';
-      position:absolute; top:-40px; left:50%; transform:translateX(-50%);
-      width:180px; height:180px;
-      background:radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-      pointer-events:none;
-    }
-
-    /* Headshot */
-    .headshot-wrap {
-      position:relative;
-      width:138px; height:138px;
-      margin:0 auto 1rem;
-    }
-
-    .headshot-ring {
-      position:absolute; inset:-4px;
-      border-radius:50%;
-      border:1.5px solid var(--accent);
-      opacity:.65;
-      animation:pulse-ring 3s ease-in-out infinite;
-    }
-
-    @keyframes pulse-ring {
-      0%,100% { transform:scale(1);   opacity:.65; }
-      50%      { transform:scale(1.06); opacity:.3; }
-    }
-
-    .headshot {
-      width:138px; height:138px;
-      border-radius:50%;
-      object-fit:cover;
-      object-position:center top;
-      display:block;
-      image-rendering:smooth;
-      filter:contrast(1.05) brightness(1.02);
-      box-shadow:0 0 0 1px rgba(102,204,255,.2), 0 8px 32px rgba(0,0,0,.6);
-    }
-
-    /* Silhouette SVG for blank headshot */
-    .headshot-placeholder {
-      width:108px; height:108px;
-      border-radius:50%;
-      background:linear-gradient(145deg, #0c1a35 0%, #0e2040 100%);
-      border:1px solid rgba(102,204,255,.18);
-      display:flex; align-items:center; justify-content:center;
-      box-shadow:0 8px 32px rgba(0,0,0,.6);
-      overflow:hidden;
-    }
-
-    .headshot-placeholder svg {
-      width:70%; height:70%;
-      opacity:.25;
-    }
-
-    .sidebar-name {
-      font-family:'Playfair Display', serif;
-      font-size:1.2rem;
-      font-weight:700;
-      letter-spacing:-.01em;
-      line-height:1.25;
-      margin-bottom:.3rem;
-    }
-
-    .sidebar-role {
-      font-family:'IBM Plex Mono', monospace;
-      font-size:.65rem;
-      letter-spacing:.1em;
-      text-transform:uppercase;
-      color:var(--accent);
-      margin-bottom:.6rem;
-    }
-
-    .sidebar-inst {
-      font-size:.8rem;
-      color:var(--muted);
-      line-height:1.5;
-    }
-
-    /* Divider */
-    .s-divider {
-      width:32px; height:1px;
-      background:var(--glass-border);
-      margin:1rem auto;
-    }
-
-    /* Status dot */
-    .status-row {
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:.45rem;
-      font-size:.72rem;
-      color:var(--muted);
-      font-family:'IBM Plex Mono', monospace;
-    }
-
-    .status-dot {
-      width:7px; height:7px;
-      border-radius:50%;
-      background:#4cffaa;
-      box-shadow:0 0 8px rgba(76,255,170,.7);
-      animation:blink-dot 2.4s ease-in-out infinite;
-    }
-
-    @keyframes blink-dot {
-      0%,100% { opacity:1; }
-      50%      { opacity:.3; }
-    }
-
-    /* Nav card */
-    .nav-card {
-      background:var(--glass);
-      border:1px solid var(--glass-border);
-      border-radius:18px;
-      padding:1.25rem 1rem;
-      backdrop-filter:blur(18px);
-      display:flex;
-      flex-direction:column;
-      gap:.45rem;
-    }
-
-    .nav-label {
-      font-family:'IBM Plex Mono', monospace;
-      font-size:.6rem;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      color:var(--muted);
-      padding:.2rem .5rem .55rem;
-    }
-
-    .nav-card a {
-      text-decoration:none;
-      color:var(--text);
-      font-size:.875rem;
-      font-weight:500;
-      padding:.6rem .85rem;
-      border-radius:10px;
-      border:1px solid transparent;
-      display:flex;
-      align-items:center;
-      gap:.65rem;
-      transition:background .18s, border-color .18s, color .18s;
-    }
-
-    .nav-card a:hover {
-      background:var(--accent-dim);
-      border-color:rgba(102,204,255,.28);
-      color:#fff;
-    }
-
-    .nav-card a .nav-icon {
-      font-size:.9rem;
-      width:18px;
-      text-align:center;
-      opacity:.7;
-    }
-
-    /* ──────────────────────────────────────────
-       MAIN CONTENT
-    ────────────────────────────────────────── */
-    .main {
-      flex:1;
-      display:flex;
-      flex-direction:column;
-      gap:1.5rem;
-      min-width:0;
-    }
-
-    /* Generic glass panel */
-    .panel {
-      background:var(--glass);
-      border:1px solid var(--glass-border);
-      border-radius:18px;
-      backdrop-filter:blur(18px);
-      padding:1.75rem 2rem;
-    }
-
-    /* ── Header panel ── */
-    .header-panel {
-      position:relative;
-      overflow:hidden;
-      padding-bottom:0;
-      animation:fadeUp .5s ease both;
-    }
-
-    @keyframes fadeUp {
-      from { opacity:0; transform:translateY(16px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
-
-    .brand-row {
-      display:flex;
-      align-items:baseline;
-      justify-content:space-between;
-      flex-wrap:wrap;
-      gap:.5rem;
-      margin-bottom:.35rem;
-    }
-
-    .brand-title {
-      font-family:'Playfair Display', serif;
-      font-size:2.1rem;
-      font-style:italic;
-      font-weight:700;
-      background:linear-gradient(90deg, #fff 0%, var(--accent) 100%);
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-      letter-spacing:-.02em;
-    }
-
-    .brand-byline {
-      font-family:'IBM Plex Mono', monospace;
-      font-size:.68rem;
-      letter-spacing:.1em;
-      text-transform:uppercase;
-      color:var(--muted);
-    }
-
-    /* EEG waveform SVG */
-    .eeg-bar {
-      width:100%;
-      height:38px;
-      margin-top:.75rem;
-      overflow:visible;
-    }
-
-    .eeg-path {
-      fill:none;
-      stroke:var(--accent);
-      stroke-width:1.5;
-      opacity:.45;
-      stroke-dasharray:1200;
-      stroke-dashoffset:1200;
-      animation:drawEEG 2.2s ease forwards .4s;
-    }
-
-    @keyframes drawEEG {
-      to { stroke-dashoffset:0; }
-    }
-
-    /* ── Headline panel ── */
-    .headline-panel {
-      padding:1.5rem 2rem;
-      animation:fadeUp .5s ease both .1s;
-    }
-
-    .mono-label {
-      font-family:'IBM Plex Mono', monospace;
-      font-size:.62rem;
-      letter-spacing:.13em;
-      text-transform:uppercase;
-      color:var(--muted);
-      margin-bottom:.65rem;
-    }
-
-    .headline {
-      font-family:'Playfair Display', serif;
-      font-size:1.95rem;
-      font-weight:700;
-      line-height:1.25;
-      letter-spacing:-.02em;
-    }
-
-    .cursor {
-      display:inline-block;
-      width:2px; height:1em;
-      background:var(--accent);
-      margin-left:3px;
-      vertical-align:middle;
-      animation:blink 1s step-end infinite;
-    }
-
-    @keyframes blink { 50% { opacity:0; } }
-    .cursor.hidden { display:none; }
-
-    /* ── Announcements ── */
-    .ann-panel {
-      padding:1.1rem 1.75rem;
-      display:flex;
-      align-items:center;
-      gap:1rem;
-      animation:fadeUp .5s ease both .2s;
-      min-height:80px;
-    }
-
-    .ann-indicator {
-      flex-shrink:0;
-      width:3px; height:36px;
-      background:linear-gradient(180deg, var(--accent) 0%, transparent 100%);
-      border-radius:2px;
-    }
-
-    .ann-inner { flex:1; min-width:0; }
-
-    .ann-kicker {
-      font-family:'IBM Plex Mono', monospace;
-      font-size:.6rem;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      color:var(--accent);
-      margin-bottom:.2rem;
-    }
-
-    #announcementText {
-      font-size:.9rem;
-      color:var(--text);
-      line-height:1.45;
-      font-weight:400;
-      opacity:1;
-      transform:translateY(0);
-      transition:opacity .38s ease, transform .38s ease;
-    }
-
-    #announcementText.fade-out { opacity:0; transform:translateY(5px); }
-
-    /* ── Bio panel ── */
-    .bio-panel {
-      padding:2rem;
-      animation:fadeUp .5s ease both .3s;
-    }
-
-    .bio-panel .mono-label { margin-bottom:1.1rem; }
-
-    .bio-text {
-      font-size:.935rem;
-      line-height:1.82;
-      color:rgba(220,232,255,.82);
-      font-weight:300;
-    }
-
-    .bio-text p + p { margin-top:1.1rem; }
-
-    .bio-text strong {
-      color:#fff;
-      font-weight:500;
-    }
-
-    /* Collab logos row */
-    .collab-row {
-      margin-top:1.5rem;
-      display:flex;
-      align-items:center;
-      gap:.6rem;
-      flex-wrap:wrap;
-    }
-
-    .collab-label {
-      font-family:'IBM Plex Mono', monospace;
-      font-size:.6rem;
-      letter-spacing:.1em;
-      text-transform:uppercase;
-      color:var(--muted);
-      margin-right:.2rem;
-    }
-
-    .collab-tag {
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.09);
-      border-radius:8px;
-      padding:.22rem .65rem;
-      font-size:.72rem;
-      color:rgba(200,215,240,.55);
-      font-family:'IBM Plex Mono', monospace;
-    }
-
-    /* ── Responsive ── */
-    @media (max-width:780px) {
-      .shell {
-        flex-direction:column;
-        padding:1.25rem 1rem;
-      }
-      .sidebar {
-        width:100%;
-        position:static;
-        flex-direction:row;
-        flex-wrap:wrap;
-      }
-      .id-card { flex:1; min-width:220px; }
-      .nav-card { flex:1; min-width:220px; flex-direction:row; flex-wrap:wrap; align-items:center; }
-      .nav-label { width:100%; }
-      .brand-title { font-size:1.65rem; }
-      .headline { font-size:1.5rem; }
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Steven Haworth | Neural by Nature</title>
+  <meta name="description" content="Steven Haworth, machine learning for clinical EEG. Research, publications, and contact." />
+  <link rel="icon" type="image/png" href="favicon2%20(1).png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="site.css" />
 </head>
 <body>
 
-<div class="grain"></div>
-<div class="bg-vignette"></div>
-
-<div class="shell">
-
-  <!-- ════════════════════════════
-       LEFT SIDEBAR
-  ════════════════════════════ -->
-  <aside class="sidebar">
-
-    <div class="id-card">
-      <div class="headshot-wrap">
-        <div class="headshot-ring"></div>
-        <!-- Swap this div for <img class="headshot" src="headshot-400.jpg"> when ready -->
-        <img class="headshot" src="headshot-400.jpg" alt="Steven Haworth">
-      </div>
-
-      <div class="sidebar-name">Steven Haworth</div>
-      <div class="sidebar-role">MS Data Science</div>
-      <div class="sidebar-inst">University of Wisconsin–Madison<br>Expected Dec 2026</div>
-
-      <div class="s-divider"></div>
-
-      <div class="status-row">
-        <span class="status-dot"></span>
-        <span>Open to opportunities</span>
-      </div>
-    </div>
-
-    <nav class="nav-card">
-      <div class="nav-label">Navigate</div>
-      <a href="research.html">
-        <span class="nav-icon">◈</span> Research
-      </a>
-      <a href="https://strucklab.wustl.edu/" target="_blank">
-        <span class="nav-icon">⬡</span> Lab
-      </a>
-      <a href="resume.html">
-        <span class="nav-icon">◉</span> Resume
-      </a>
-      <a href="symposium.html">
-        <span class="nav-icon">◎</span> Posters
-      </a>
-      <a href="https://github.com/stevehaworth02" target="_blank">
-        <span class="nav-icon">⌥</span> GitHub
-      </a>
-      <a href="https://www.linkedin.com/in/stevenhaworth02/" target="_blank">
-        <span class="nav-icon">↗</span> LinkedIn
-      </a>
-      <a href="mailto:0218steven@gmail.com">
-        <span class="nav-icon">◌</span> Email
-      </a>
-      <a href="Achievements.html">
-        <span class="nav-icon">◇</span> Achievements
-      </a>
-      <a href="academics.html">
-        <span class="nav-icon">◈</span> Academics
-      </a>
-      <a href="community.html">
-        <span class="nav-icon">◌</span> Engagement
-      </a>
+  <header class="site-header wrap">
+    <a class="brand" href="index.html">Neural by Nature</a>
+    <nav class="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="research.html">Research</a></li>
+        <li><a href="symposium.html">Posters</a></li>
+        <li><a href="academics.html">Academics</a></li>
+        <li><a href="Achievements.html">Achievements</a></li>
+        <li><a href="community.html">Engagement</a></li>
+        <li><a href="resume.html">Resume</a></li>
+        <li><a href="cv.html">CV</a></li>
+      </ul>
     </nav>
+  </header>
 
-  </aside>
+  <main>
 
-  <!-- ════════════════════════════
-       MAIN CONTENT
-  ════════════════════════════ -->
-  <main class="main">
-
-    <!-- Brand header -->
-    <div class="panel header-panel">
-      <div class="brand-row">
-        <span class="brand-title">Neural by Nature</span>
-        <span class="brand-byline">neuralbynature.dev</span>
+    <section class="intro wrap grid" aria-label="Introduction">
+      <div class="gutter">
+        <img class="portrait" src="headshot-400.jpg" alt="Steven Haworth" width="120" height="120" />
       </div>
-
-      <!-- Continuous EEG canvas -->
-      <canvas id="eegCanvas" style="width:100%;height:42px;display:block;margin-top:.75rem;opacity:.55;"></canvas>
-    </div>
-
-    <!-- Typing headline -->
-    <div class="panel headline-panel">
-      <div class="mono-label">Research Focus</div>
-      <div class="headline">
-        Data Science · Machine Learning · Signal Processing
+      <div class="content">
+        <h1>Steven Haworth</h1>
+        <ul class="roles">
+          <li>Machine Learning Engineer, EEG/Neurotech, WashU Medicine Neurology</li>
+          <li>Graduate Researcher, <a href="https://strucklab.wustl.edu/" target="_blank" rel="noopener">Struck Lab</a>, Washington University in St. Louis</li>
+          <li>MS Data Science, University of Wisconsin–Madison, expected December 2026</li>
+        </ul>
+        <ul class="links">
+          <li><a href="mailto:0218steven@gmail.com">Email</a></li>
+          <li><a href="cv.html">CV</a></li>
+          <li><a href="resume.html">Resume</a></li>
+          <li><a href="https://scholar.google.com/citations?user=LGthTCkAAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar</a></li>
+          <li><a href="https://github.com/stevehaworth02" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/stevenhaworth02/" target="_blank" rel="noopener">LinkedIn</a></li>
+        </ul>
       </div>
-    </div>
+    </section>
 
-    <!-- Announcements -->
-    <div class="panel ann-panel" aria-live="polite">
-      <div class="ann-indicator"></div>
-      <div class="ann-inner">
-        <div class="ann-kicker">Latest</div>
-        <div id="announcementText"></div>
+    <figure class="trace wrap">
+      <svg id="eeg" role="img" aria-label="Illustrative bipolar EEG montage showing a seizure beginning in the left temporal channels"></svg>
+    </figure>
+
+    <section class="row wrap grid" id="about" aria-labelledby="about-h">
+      <h2 id="about-h">About</h2>
+      <div class="content">
+        <p>My work in EEG-based machine learning spans seizure detection, consciousness monitoring, and neural signal classification across epilepsy, acute brain injury, coma, sleep disorders, and post-cardiac arrest populations. I build systems designed for clinical deployment. Current work includes active collaborations with UW-Madison, Harvard, Yale, and Washington University in St. Louis.</p>
+        <p>I work across CNNs, LSTMs, large language models, computer vision, statistical modeling, mathematical optimization, and the full data lifecycle, including experiment tracking and model versioning with tools like MLflow.</p>
       </div>
-    </div>
+    </section>
 
-    <!-- Bio -->
-    <div class="panel bio-panel">
-      <div class="mono-label">About</div>
-      <div class="bio-text">
-        <p>
-          An ML practitioner with deep specialization in <strong>EEG-based machine learning</strong>, my work spans seizure detection, consciousness monitoring, and neural signal classification across epilepsy, acute brain injury, coma, sleep disorders, and post-cardiac arrest populations. I build systems designed for clinical deployment, not just benchmarks. Current work includes papers under review on seizure forecasting and sleep monitoring, a presentation accepted at ACNS 2026, and active collaborations with <strong>UW-Madison, Harvard, Yale, and Washington University in St. Louis</strong>.
+    <section class="row wrap grid" id="research" aria-labelledby="research-h">
+      <h2 id="research-h">Research</h2>
+      <div class="content">
+        <dl class="areas">
+          <div>
+            <dt>Seizure detection under domain shift</dt>
+            <dd>Spatiotemporal deep learning (CNN, BiLSTM, attention) trained on scalp EEG and validated on continuous ICU recordings, with a focus on false-alarm reduction.</dd>
+          </div>
+          <div>
+            <dt>Seizure forecasting in the ICU</dt>
+            <dd>Interpretable models that estimate near-term seizure risk from continuous EEG, with external validation on independent cohorts.</dd>
+          </div>
+          <div>
+            <dt>Neural correlates of consciousness</dt>
+            <dd>Topological and spectral signatures of high-density EEG during sleep and serial awakenings.</dd>
+          </div>
+          <div>
+            <dt>Sensor optimization</dt>
+            <dd>Mixed-integer programming for minimal EEG montages that preserve classification performance.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="row wrap grid" id="publications" aria-labelledby="pubs-h">
+      <h2 id="pubs-h">Publications</h2>
+      <div class="content">
+        <ul class="entries tight">
+          <li>
+            <h3 class="entry-title"><a href="https://doi.org/10.1101/2026.08.16.745040" target="_blank" rel="noopener">Neural signatures of conscious experience during sleep: a serial awakening study using high-density EEG</a></h3>
+            <div class="entry-meta inline">Selte A, <strong>Haworth SE</strong>, Vanasse T, Alauddin T, Gjini K, Philibert-Rosas S, et al. <em>bioRxiv</em>, 2026. Co-first author, under review.</div>
+          </li>
+          <li>
+            <h3 class="entry-title">Predicting ICU seizures using 1 hour of cEEG</h3>
+            <div class="entry-meta inline">Phadikar S, Philibert-Rosas S, <strong>Haworth SE</strong>, Fatima S, Grobbelaar M, et al. <em>Journal of Clinical Neurophysiology</em>, 2026.</div>
+          </li>
+          <li>
+            <h3 class="entry-title">Duration of EEG monitoring needed to ensure a low risk of seizure recurrence in hospitalized patients</h3>
+            <div class="entry-meta inline">Krishnamurthy PV, Philibert-Rosas S, Rivkin M, Brace CJ, <strong>Haworth SE</strong>, et al. <em>Journal of Neurology</em>, 2026;273(1):70.</div>
+          </li>
+          <li>
+            <h3 class="entry-title">Frequent cannabis use and the association with seizure burden in drug-resistant epilepsy</h3>
+            <div class="entry-meta inline">Philibert-Rosas S, Guston KA, Kalkach-Aparicio M, Keller A, Semia S, Imhoff-Smith T, Adluru N, Brace CJ, <strong>Haworth SE</strong>, et al. <em>Epilepsia</em>, 2026.</div>
+          </li>
+          <li>
+            <h3 class="entry-title">Thermodynamic rigidity of harmonic brain states relates to general mental ability in juvenile myoclonic epilepsy</h3>
+            <div class="entry-meta inline">De Paiva FB, Zhao M, Zhao M, Philibert-Rosas S, Brace CJ, Moe E, <strong>Haworth SE</strong>, et al. <em>bioRxiv</em>, 2026.</div>
+          </li>
+        </ul>
+        <p class="more">
+          <a href="research.html">Abstracts and work in progress</a>
+          <a href="https://scholar.google.com/citations?user=LGthTCkAAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar</a>
         </p>
-        <p>
-          My technical range extends well beyond neuro. I work across <strong>CNNs, LSTMs, large language models, computer vision, statistical modeling, mathematical optimization, and the full data lifecycle</strong>, and I apply that range to whatever the problem demands. I treat the full ML lifecycle seriously, including experiment tracking and model versioning with tools like <strong>MLflow</strong>, and careful selection of metrics that reflect the true nature of the problem rather than those that are simply easy to optimize. I am drawn to complex, high-stakes data challenges where rigorous methodology produces tangible impact.
-          Seeking <strong>Summer 2026 internships</strong> and full-time opportunities post-December 2026. Open to relocation.
-        </p>
       </div>
+    </section>
 
-      <div class="collab-row">
-        <span class="collab-label">Collaborations</span>
-        <span class="collab-tag">UW–Madison</span>
-        <span class="collab-tag">Harvard</span>
-        <span class="collab-tag">Beth Israel</span>
-        <span class="collab-tag">WashU</span>
+    <section class="row wrap grid" id="contact" aria-labelledby="contact-h">
+      <h2 id="contact-h">Contact</h2>
+      <div class="content">
+        <p><a href="mailto:0218steven@gmail.com">0218steven@gmail.com</a></p>
+        <p class="contact-note">Email preferred for business &amp; collaboration inquiries. Seeking full-time opportunities post-December 2026. Open to relocation.</p>
       </div>
-    </div>
+    </section>
 
   </main>
-</div>
 
-<script>
-/* ── Continuous EEG waveform ── */
-(function() {
-  const canvas = document.getElementById("eegCanvas");
-  const dpr = window.devicePixelRatio || 1;
+  <footer class="site-footer wrap grid">
+    <div class="gutter"></div>
+    <p>© 2026 Steven Haworth</p>
+  </footer>
 
-  function resize() {
-    const rect = canvas.getBoundingClientRect();
-    canvas.width  = rect.width  * dpr;
-    canvas.height = rect.height * dpr;
-  }
-  resize();
-  window.addEventListener("resize", resize);
-
-  const ctx = canvas.getContext("2d");
-
-  // Ring buffer of y-values
-  const HISTORY = 1800;
-  const buf = new Float32Array(HISTORY);
-  let head = 0;
-
-  // EEG signal state
-  let phase      = 0;
-  let noiseVal   = 0;
-  let spikeTimer = 0;
-  let spikePhase = -1; // -1 = no spike
-  let spikeIdx   = 0;
-
-  // Spike waveform shape (normalized -1..1)
-  const SPIKE = [0,.08,.18,.35,.6,1,.55,-.35,-.7,-.45,-.2,-.08,-.02,0,0];
-
-  function nextSample() {
-    // Slow sinusoidal base (alpha-like rhythm ~10Hz feel)
-    phase += 0.045;
-    const base = Math.sin(phase) * 0.18 + Math.sin(phase * 2.3) * 0.07;
-
-    // Pink-ish noise
-    noiseVal = noiseVal * 0.92 + (Math.random() - 0.5) * 0.18;
-
-    // Random spike events
-    spikeTimer--;
-    let spike = 0;
-    if (spikePhase >= 0) {
-      spike = SPIKE[spikeIdx] * 0.78;
-      spikeIdx++;
-      if (spikeIdx >= SPIKE.length) { spikePhase = -1; spikeIdx = 0; }
-    } else if (spikeTimer <= 0) {
-      spikePhase = 0; spikeIdx = 0;
-      spikeTimer = 120 + Math.random() * 220;
-    }
-
-    return base + noiseVal + spike;
-  }
-
-  // Pre-fill buffer
-  for (let i = 0; i < HISTORY; i++) { buf[i] = nextSample(); }
-
-  let lastTime = 0;
-  const SAMPLES_PER_SEC = 60; // scroll speed
-
-  function draw(ts) {
-    requestAnimationFrame(draw);
-
-    const elapsed = ts - lastTime;
-    if (elapsed < 1000 / SAMPLES_PER_SEC) return;
-    lastTime = ts;
-
-    // Push new sample
-    buf[head % HISTORY] = nextSample();
-    head++;
-
-    const W = canvas.width;
-    const H = canvas.height;
-    const mid = H / 2;
-    const amp = H * 0.38;
-
-    ctx.clearRect(0, 0, W, H);
-
-    ctx.beginPath();
-    ctx.strokeStyle = "#66ccff";
-    ctx.lineWidth   = 1.5 * dpr;
-    ctx.lineJoin    = "round";
-
-    for (let i = 0; i < W; i++) {
-      // Map pixel x → history index (oldest left, newest right)
-      const age = W - 1 - i;            // 0 = newest, W-1 = oldest
-      const bufIdx = ((head - 1 - age) % HISTORY + HISTORY) % HISTORY;
-      const y = mid - buf[bufIdx] * amp;
-      i === 0 ? ctx.moveTo(i, y) : ctx.lineTo(i, y);
-    }
-
-    ctx.stroke();
-  }
-
-  requestAnimationFrame(draw);
-})();
-
-/* ── Announcement carousel ── */
-const ANNOUNCEMENTS = [
-  "Currently seeking Summer 2026 internships in Data Science & Machine Learning",
-  "A putative role of heavy Cannabis use in Temporal Lobe Epilepsy now under peer review",
-  "Argus v1.3 seizure detection algorithm to debut at the ACNS Annual Meeting 2026",
-  "Email preferred for business & collaboration inquiries"
-];
-
-const annEl = document.getElementById("announcementText");
-let idx = 0;
-
-annEl.textContent = ANNOUNCEMENTS[0];
-
-setInterval(() => {
-  annEl.classList.add("fade-out");
-  setTimeout(() => {
-    idx = (idx + 1) % ANNOUNCEMENTS.length;
-    annEl.textContent = ANNOUNCEMENTS[idx];
-    annEl.classList.remove("fade-out");
-  }, 390);
-}, 4000);
-</script>
+  <script src="eeg.js"></script>
+</body>
+</html>
